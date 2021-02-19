@@ -8,25 +8,60 @@ import json
 class DecorationCartView(View):
     def get(self, request, *args, **kwargs):
         '''
-        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'status': 200}
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'query', 'status': 200}
         '''
         items = FeeItem.objects.all() 
         data_values = []
         for i in items:
             each = {'id': i.payid, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
             data_values.append(each)
-        result = {'data': data_values, 'status': 200} 
+        result = {'data': data_values, 'msg': 'query', 'status': 200} 
         return JsonResponse(result, json_dumps_params={"ensure_ascii": False})
 
     def post(self, request, *args, **kwargs):
-        pass
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body) 
+        item = json.loads(body)
+        #payid = item.get('payid')
+        #ret = FeeItem.objects.create(payid=payid, name=name, fee=fee, paydate=paydate)
+        ret = FeeItem.objects.create(**item)
+        print('ret: ', ret) 
+        
+        items = [item]
+        result = {'data': items, 'msg': 'create', 'status': 200}
+        return JsonResponse(result)
 
-    def update(self, request, *args, **kwargs):
-        pass
+    def put(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'update', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        name = item.get('name')
+        #FeeItem.objects.filter(name=name).update(payid=payid, name=name)
+        ret = FeeItem.objects.filter(name=name).update(**item)
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'update', 'status': 200}
+        return JsonResponse(result)
     
     def delete(self, request, *args, **kwargs):
-        pass
-
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'delete', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        name = item.get('name')
+        ret = FeeItem.objects.filter(name=name).delete()
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'delete', 'status': 200}
+        return JsonResponse(result)
 
 class FirstView(View):
     def get(self, request, *args, **kwargs):
