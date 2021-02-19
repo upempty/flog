@@ -5,6 +5,29 @@ from django.http import JsonResponse
 from rest.models import FeeItem
 import json
 
+class DecorationCartView(View):
+    def get(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'status': 200}
+        '''
+        items = FeeItem.objects.all() 
+        data_values = []
+        for i in items:
+            each = {'id': i.payid, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
+            data_values.append(each)
+        result = {'data': data_values, 'status': 200} 
+        return JsonResponse(result, json_dumps_params={"ensure_ascii": False})
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+    def update(self, request, *args, **kwargs):
+        pass
+    
+    def delete(self, request, *args, **kwargs):
+        pass
+
+
 class FirstView(View):
     def get(self, request, *args, **kwargs):
         #result = {'status': True, 'data': 'first response'}
