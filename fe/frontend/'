@@ -35,11 +35,10 @@
               <td><el-col width="15%"><el-input v-model="InData.payid"></el-input></el-col></td>
               <td><el-col width="15%"><el-input v-model="InData.name"></el-input></el-col></td>
               <td><el-col width="15%"><el-input v-model="InData.fee"></el-input></el-col></td>
-              <td> <el-date-picker v-model="InData.paydate" type="datetime" placeholder="chosse time" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> </td>
+              <td> <el-date-picker v-model="InData.paydate" type="datetime" placeholder="选择time" value-format="yyyy-mm-dd hh:mm:ss"></el-date-picker> </td>
               <td><el-col width="15%"><el-button type="button" plain @click="on_add">添加</el-button></el-col></td>
               <td><el-col width="15%"><el-button type="button" plain @click="on_query">查询刷新</el-button></el-col></td>
-              <td><el-col width="10%"><el-button type="button" plain @click="on_update">更新</el-button></el-col></td>
-              <td><el-col width="10%"><el-button type="button" plain @click="on_delete">删除</el-button></el-col></td>
+              <td><el-col width="15%"><el-button type="button" plain @click="on_update">更新</el-button></el-col></td>
            </tr>
          </tbody>
        </table>
@@ -110,7 +109,6 @@ export default {
     },
     on_update () {
       console.log('test update')
-      alert('updating')
       console.log(this.InData.name, this.InData.fee)
       this.$axios({
         url: 'decoration/cart/',
@@ -127,27 +125,7 @@ export default {
         alert(res.msg)
       })
       console.log('testend')
-    },
-    on_delete () {
-      alert('deleting')
-      console.log(this.InData.name, this.InData.fee)
-      this.$axios({
-        url: 'decoration/cart/',
-        method: 'delete',
-        data: {
-          payid: this.InData.payid,
-          name: this.InData.name,
-          fee: this.InData.fee,
-          paydate: this.InData.paydate
-        }
-      }).then(res => {
-        res = res.data
-        alert(res.msg)
-      })
-      console.log('testend')
     }
-
-
   }
 }
 </script>

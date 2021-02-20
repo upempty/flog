@@ -93,3 +93,9 @@ main important thing is 'cnpm install' sucessfully,
 to reboot host, 
 then both 'cnpm run dev' and 'npm run dev' commands work.
 ```
+
+### add vue axios get/post/put/delete functions with ugly UI:)
+```
+-              <td> <el-date-picker v-model="InData.paydate" type="datetime" placeholder="选择time" value-format="yyyy-mm-dd hh:mm:ss"></el-date-picker> </td>
++              <td> <el-date-picker v-model="InData.paydate" type="datetime" placeholder="chosse time" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> </td>
+```
