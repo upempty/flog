@@ -7,14 +7,20 @@
      </el-breadcrumb>
      <el-table :data="ItemsFee" ref="multipleTable" border :header-cell-style="tableHeaderColor">
        <el-table-column type="selection" width="55"></el-table-column>
-       <el-table-column prop="id" label="编号" width="80"></el-table-column>
+       <el-table-column prop="id" label="编号" width="80">
+         <template slot-scope="{row, $index}">
+            <input class="edit-cell" v-show="showEdit[$index]" v-model="row.id">
+            <span v-show="!showEdit[$index]">{{row.id}}</span>
+         </template>
+       </el-table-column>
        <el-table-column prop="name" label="项目" width="140"></el-table-column>
        <el-table-column prop="fee" label="费用" width="120"></el-table-column>
        <el-table-column prop="paydate" label="付款时间" width="200"></el-table-column>
        <el-table-column label="操作" width="200">
          <template slot-scope="scope">
-         <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)">编辑</el-button>
-         <el-button size="small" type="danger" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
+         <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-if="!showBtn[scope.$index]">编辑</el-button>
+         <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-if="showBtn[scope.$index]">save</el-button>
+         <el-button size="mini" type="info" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
          </template>
        </el-table-column>
      </el-table>
@@ -51,7 +57,7 @@
 export default {
   name: 'ItemsFee',
   data () {
-    return { ItemsFee: [], InData: {} }
+    return { ItemsFee: [], InData: {}, showEdit: [], showBtn: [] }
   },
   mounted: function () {
     this.$axios({
@@ -145,6 +151,30 @@ export default {
         alert(res.msg)
       })
       console.log('testend')
+    },
+    handle_delete (index, row) {
+      alert('handling deleting')
+      this.ItemsFee.splice(index, 1)
+      alert('handling deleted')
+    },
+    handle_edit (index, row) {
+      alert('handling editing')
+      this.showEdit[index] = true
+      this.showBtn[index] = true
+      this.$set(this.showEdit, row, true)
+      this.$set(this.showBtn, row, true)
+      alert(row.id)
+    },
+    handle_save (index, row) {
+      alert('handling saving')
+      this.showEdit[index] = false
+      this.showBtn[index] = false
+      this.$set(this.showEdit, row, false)
+      this.$set(this.showBtn, row, false)
+      this.$nextTick(() => {
+        alert('tik')
+      })
+      alert(row.id)
     }
   }
 }
