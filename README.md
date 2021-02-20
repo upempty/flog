@@ -53,3 +53,43 @@ curl -H "Content-Type:application/json" -X DELETE --data '{"payid":555, "name":"
 ~server response:
 {"data": [{"payid": 555, "name": "test15", "fee": 555, "paydate": "2021-02-19"}], "msg": "delete", "status": 200}% 
 ```
+
+
+## frontend vue bsed view
+### create vue project
+```
+cd /home/cf/program/web_vue/
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+cnpm install webpack -g
+cnpm install vue-cli -g
+--vue init webpack frontend
+cd frontend
+cnpm install
+vim /home/cf/program/web_vue/frontend/config/index.js
+==change host from localhost to 0.0.0.0, so that public ip can be accessed via outside of the server
+-> host: '0.0.0.0' 
+cnpm run dev
+Your application is running here: http://0.0.0.0:8082
+
+==client accessing via url
+http://150.158.168.151:8082/
+```
+
+### project to load data to UI from django
+```
+cd /home/cf/program/web_vue/frontend/
+cnpm i element-ui -S
+
+==src/main.js change the url IP@
+axios.defaults.baseURL = 'http://150.158.168.151:9000/'
+
+-         <template scope="scope">
++         <template slot-scope="scope">
+
+seems executing npm run dev---killed.!!!
+but cnpm run dev
+
+main important thing is 'cnpm install' sucessfully, 
+to reboot host, 
+then both 'cnpm run dev' and 'npm run dev' commands work.
+```

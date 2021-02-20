@@ -12,7 +12,7 @@
        <el-table-column prop="fee" label="费用" width="120"></el-table-column>
        <el-table-column prop="paydate" label="付款时间" width="200"></el-table-column>
        <el-table-column label="操作" width="200">
-         <template scope="scope">
+         <template slot-scope="scope">
          <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)">编辑</el-button>
          <el-button size="small" type="danger" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
          </template>
@@ -52,7 +52,7 @@ export default {
   },
   mounted: function () {
     this.$axios({
-      url: 'firstV/',
+      url: 'decoration/cart/',
       method: 'get',
       params: {}
     }).then(res => {
