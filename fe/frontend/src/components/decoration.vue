@@ -146,8 +146,6 @@ export default {
       })
       console.log('testend')
     }
-
-
   }
 }
 </script>
