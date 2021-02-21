@@ -10,10 +10,16 @@ class DecorationCartView(View):
         '''
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'query', 'status': 200}
         '''
-        items = FeeItem.objects.all() 
+        name = request.GET.get('name')
+        print('naming:', name)
+        items = []
+        if name:
+            items = FeeItem.objects.filter(name__icontains=name)
+        else:
+            items = FeeItem.objects.all() 
         data_values = []
         for i in items:
-            each = {'id': i.payid, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
+            each = {'payid': i.payid, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
             data_values.append(each)
         result = {'data': data_values, 'msg': 'query', 'status': 200} 
         return JsonResponse(result, json_dumps_params={"ensure_ascii": False})
@@ -73,7 +79,7 @@ class FirstView(View):
         its = FeeItem.objects.all()
         li = []
         for i in its:
-            one = {'id': i.id, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
+            one = {'payid': i.payid, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
             li.append(one)
         result = {'data': li, 'status':200}
         # 'meta': {'status': 200, 'msg': 'no error'}        

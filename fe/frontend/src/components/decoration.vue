@@ -1,63 +1,60 @@
 <template>
   <div id='deco'>
-     <div id='div1'>
-     <el-breadcrumb seperator="/" class="padding-b">
-        <el-breadcrumb-item :to="{path: '/'}">Home</el-breadcrumb-item>
-        <el-breadcrumb-item>Decoration</el-breadcrumb-item>
-     </el-breadcrumb>
-     <el-table :data="ItemsFee" ref="multipleTable" border :header-cell-style="tableHeaderColor">
-       <el-table-column type="selection" width="55"></el-table-column>
-       <el-table-column prop="id" label="编号" width="80">
-         <template slot-scope="{row, $index}">
-            <input class="edit-cell" v-show="showEdit[$index]" v-model="row.id">
-            <span v-show="!showEdit[$index]">{{row.id}}</span>
-         </template>
-       </el-table-column>
-       <el-table-column prop="name" label="项目" width="140"></el-table-column>
-       <el-table-column prop="fee" label="费用" width="120"></el-table-column>
-       <el-table-column prop="paydate" label="付款时间" width="200"></el-table-column>
-       <el-table-column label="操作" width="200">
-         <template slot-scope="scope">
-         <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-if="!showBtn[scope.$index]">编辑</el-button>
-         <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-if="showBtn[scope.$index]">save</el-button>
-         <el-button size="mini" type="info" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
-         </template>
-       </el-table-column>
-     </el-table>
+     <div class='ShowLevel'>
+       <el-breadcrumb seperator="/" class="padding-b">
+          <el-breadcrumb-item :to="{path: '/'}">Home</el-breadcrumb-item>
+          <el-breadcrumb-item>Decoration</el-breadcrumb-item>
+       </el-breadcrumb>
      </div>
-     <div id='sum1'> </div>
-     <div id="tofill">
-       <table class="table table-bordered">
-         <thead>
-            <tr>
-              <th width="15%">编号</th>
-              <th width="15%">项目名</th>
-              <th width="15%">费用</th>
-              <th width="15%">付款时间</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr>
-              <td><el-col width="15%"><el-input v-model="InData.payid"></el-input></el-col></td>
-              <td><el-col width="15%"><el-input v-model="InData.name"></el-input></el-col></td>
-              <td><el-col width="15%"><el-input v-model="InData.fee"></el-input></el-col></td>
-              <td> <el-date-picker v-model="InData.paydate" type="datetime" placeholder="chosse time" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> </td>
-              <td><el-col width="15%"><el-button type="button" plain @click="on_add">添加</el-button></el-col></td>
-              <td><el-col width="15%"><el-button type="button" plain @click="on_query">查询刷新</el-button></el-col></td>
-              <td><el-col width="10%"><el-button type="button" plain @click="on_update">更新</el-button></el-col></td>
-              <td><el-col width="10%"><el-button type="button" plain @click="on_delete">删除</el-button></el-col></td>
-           </tr>
-         </tbody>
+     <div class='ToSearch' font-size:0>
+       <table class="tables">
+       <td><el-col><el-input placeholder="项目名" v-model="SearchData.name" style="display:inline"></el-input></el-col></td>
+       <td><el-col><el-button type="button" plain @click="on_search">搜索</el-button></el-col></td>
        </table>
-    </div>
-  </div>
+     </div>
+     <div class="ToInput">
+       <table class="tables">
+         <tr>
+           <td><el-col width="15%"><el-input placeholder="编号" v-model="InData.payid"></el-input></el-col></td>
+           <td><el-col width="15%"><el-input placeholder="项目名" v-model="InData.name"></el-input></el-col></td>
+           <td><el-col width="15%"><el-input placeholder="费用" v-model="InData.fee"></el-input></el-col><td>
+           <td><el-date-picker v-model="InData.paydate" type="datetime" placeholder="chosse time" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker></td>
+           <td><el-col width="15%"><el-button type="button" plain @click="on_add">添加</el-button></el-col></td>
+           <td><el-col width="15%"><el-button type="button" plain @click="on_query">查询刷新</el-button></el-col></td>
+           <td><el-col width="10%"><el-button type="button" plain @click="on_update">更新</el-button></el-col></td>
+           <td><el-col width="10%"><el-button type="button" plain @click="on_delete">删除</el-button></el-col></td>
+         </tr>
+       </table>
+     </div>
+    <div class='Listing'>
+       <el-table :data="ItemsFee" ref="multipleTable" border :header-cell-style="tableHeaderColor">
+         <el-table-column type="selection" width="55"></el-table-column>
+         <el-table-column prop="payid" label="编号" width="80">
+           <template slot-scope="{row, $index}">
+              <input class="edit-cell" v-show="showEdit[$index]" v-model="row.payid">
+              <span v-show="!showEdit[$index]">{{row.payid}}</span>
+           </template>
+         </el-table-column>
+         <el-table-column prop="name" label="项目" width="140"></el-table-column>
+         <el-table-column prop="fee" label="费用" width="120"></el-table-column>
+         <el-table-column prop="paydate" label="付款时间" width="200"></el-table-column>
+         <el-table-column label="操作" width="200">
+           <template slot-scope="scope">
+           <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-if="!showBtn[scope.$index]">编辑</el-button>
+           <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-if="showBtn[scope.$index]">save</el-button>
+           <el-button size="mini" type="info" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
+           </template>
+         </el-table-column>
+       </el-table>
+     </div>
+   </div>
 </template>
 
 <script>
 export default {
   name: 'ItemsFee',
   data () {
-    return { ItemsFee: [], InData: {}, showEdit: [], showBtn: [] }
+    return { ItemsFee: [], InData: {}, SearchData: {}, showEdit: [], showBtn: [] }
   },
   mounted: function () {
     this.$axios({
@@ -105,7 +102,7 @@ export default {
       this.$axios({
         url: 'decoration/cart/',
         method: 'get',
-        data: {
+        params: {
         }
       }).then(res => {
         res = res.data
@@ -113,6 +110,18 @@ export default {
         alert(res.msg)
       })
       console.log('testend')
+    },
+    on_search () {
+      this.$axios({
+        url: 'decoration/cart/',
+        method: 'get',
+        params: {
+          name: this.SearchData.name
+        }
+      }).then(res => {
+        res = res.data
+        this.ItemsFee = res.data
+      })
     },
     on_update () {
       console.log('test update')
@@ -163,7 +172,7 @@ export default {
       this.showBtn[index] = true
       this.$set(this.showEdit, row, true)
       this.$set(this.showBtn, row, true)
-      alert(row.id)
+      alert(row.payid)
     },
     handle_save (index, row) {
       alert('handling saving')
@@ -174,7 +183,7 @@ export default {
       this.$nextTick(() => {
         alert('tik')
       })
-      alert(row.id)
+      alert(row.payid)
     }
   }
 }
