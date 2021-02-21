@@ -27,7 +27,7 @@
        </table>
      </div>
     <div class='Listing'>
-       <el-table :data="ItemsFee" ref="multipleTable" border :header-cell-style="tableHeaderColor">
+       <el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :header-cell-style="tableHeaderColor">
          <el-table-column type="selection" width="55"></el-table-column>
          <el-table-column prop="payid" label="编号" width="80">
            <template slot-scope="{row, $index}">
@@ -47,6 +47,15 @@
          </el-table-column>
        </el-table>
      </div>
+     <div style="text-align: left;margin-top: 5px;">
+       <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-size="pagesize" :total="totalSize"
+          @size-change="handleSizeChange"
+          @current-change="current_change">
+      </el-pagination>
+    </div>
    </div>
 </template>
 
@@ -54,7 +63,15 @@
 export default {
   name: 'ItemsFee',
   data () {
-    return { ItemsFee: [], InData: {}, SearchData: {}, showEdit: [], showBtn: [] }
+    return { ItemsFee: [],
+      InData: {},
+      SearchData: {},
+      showEdit: [],
+      showBtn: [],
+      currentPage: 1,
+      pagesize: 6,
+      totalSize: 0
+    }
   },
   mounted: function () {
     this.$axios({
@@ -64,6 +81,7 @@ export default {
     }).then(res => {
       res = res.data
       this.ItemsFee = res.data
+      this.totalSize = this.ItemsFee.length
       console.log('testend-mount')
       alert(this.ItemsFee[0].name)
       alert(res.status)
@@ -107,6 +125,7 @@ export default {
       }).then(res => {
         res = res.data
         this.ItemsFee = res.data
+        this.totalSize = this.ItemsFee.length
         alert(res.msg)
       })
       console.log('testend')
@@ -121,6 +140,10 @@ export default {
       }).then(res => {
         res = res.data
         this.ItemsFee = res.data
+        this.totalSize = this.ItemsFee.length
+        this.currentPage = 1
+        alert(this.totalSize)
+        alert(this.currentPage)
       })
     },
     on_update () {
@@ -184,6 +207,12 @@ export default {
         alert('tik')
       })
       alert(row.payid)
+    },
+    current_change (currentPage) {
+      this.currentPage = currentPage
+    },
+    handleSizeChange (newSize) {
+      this.pagesize = newSize
     }
   }
 }

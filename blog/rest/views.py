@@ -22,6 +22,7 @@ class DecorationCartView(View):
             each = {'payid': i.payid, 'name': i.name, 'fee': i.fee, 'paydate': i.paydate}
             data_values.append(each)
         result = {'data': data_values, 'msg': 'query', 'status': 200} 
+        #print('result: ', result)
         return JsonResponse(result, json_dumps_params={"ensure_ascii": False})
 
     def post(self, request, *args, **kwargs):

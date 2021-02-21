@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-        <Header> 门前屋檐下, 仰望星空, 化作一只小鸟自由飞翔 </Header>
+        <Header> 小桥流水人家，倚坐门前屋檐下，仰望满天星星，化作一片片柳絮在空中飘荡。</Header>
     </el-header>
     <el-container>
       <el-aside width="150px">
