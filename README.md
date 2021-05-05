@@ -74,6 +74,11 @@ Your application is running here: http://0.0.0.0:8082
 
 ==client accessing via url
 http://150.158.168.151:8082/
+
+new:
+cd /home/cf/program/flog/fe/frontend
+cnpm run dev
+http://150.158.168.151:8080/
 ```
 
 ### project to load data to UI from django
