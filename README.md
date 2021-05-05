@@ -1,4 +1,10 @@
 # flog
+## env
+```  
+150.158.168.151 root/c..i()
+
+```  
+
 ## backend class based view
 ### get from db and new url to access
 ```
