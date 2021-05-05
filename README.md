@@ -4,7 +4,8 @@
 ```
 cd /home/cf/program/
 source my_pyenv/bin/activate
-/home/cf/program/flog/blog/python manage.py runserver 0.0.0.0:9000
+cd /home/cf/program/flog/blog/
+python manage.py runserver 0.0.0.0:9000
 ```
 
 #### curl for get test
