@@ -10,3 +10,10 @@ class FeeItem(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=50, verbose_name='Title')
+    content = models.CharField(max_length=600, verbose_name='Content')
+    def __str__(self):
+        return self.title

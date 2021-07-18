@@ -3,7 +3,42 @@ from django.views import View
 from django.http import JsonResponse
 # Create your views here.
 from rest.models import FeeItem
+from rest.models import Article
 import json
+
+class ArticleView(View):
+    def get(self, request, *args, **kwargs):
+        items = []
+        items = Article.objects.all() 
+        data_values = []
+        for i in items:
+            each = {'title': i.title, 'content': i.content}
+            data_values.append(each)
+        result = {'data': data_values, 'msg': 'query', 'status': 200} 
+        print('result: ', result)
+        return JsonResponse(result, json_dumps_params={"ensure_ascii": False})
+
+    def post(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        #payid = item.get('payid')
+        #ret = FeeItem.objects.create(payid=payid, name=name, fee=fee, paydate=paydate)
+        ret = Article.objects.create(**item)
+        print('ret: ', ret)
+        items = [item]
+        result = {'data': items, 'msg': 'create', 'status': 200}
+        return JsonResponse(result)
+
+    def put(self, request, *args, **kwargs):
+        result = {'data': [], 'msg': 'create', 'status': 200}
+        return JsonResponse(result)
+    def delete(self, request, *args, **kwargs):
+        result = {'data': [], 'msg': 'create', 'status': 200}
+        return JsonResponse(result)
 
 class DecorationCartView(View):
     def get(self, request, *args, **kwargs):

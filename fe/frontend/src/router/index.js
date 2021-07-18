@@ -4,6 +4,8 @@ import Layout from '@/views/layout'
 import First from '@/components/first'
 import User from '@/components/user'
 import ItemsFee from '@/components/decoration'
+import Blog from '@/components/blog'
+import Post from '@/components/post'
 
 Vue.use(Router)
 
@@ -27,6 +29,16 @@ export default new Router({
         path: '/decoration',
         name: 'ItemsFee',
         component: ItemsFee
+      },
+      {
+        path: '/blog',
+        name: 'Blog',
+        component: Blog
+      },
+      {
+        path: '/post',
+        name: 'Post',
+        component: Post
       }
       ]
     }
