@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("firstV/", include("rest.urls")),
     path("decoration/", include("rest.urls")),
+    path("post/", include("rest.urls")),
 ]
