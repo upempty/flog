@@ -10,6 +10,10 @@
 source run.sh
 source client.sh
 
+git add .
+git commit -m 'abc'
+git push origin HEAD:main
+
 ```
 
 ## backend class based view
