@@ -5,6 +5,13 @@
 
 ```  
 
+## script to execute
+```
+source run.sh
+source client.sh
+
+```
+
 ## backend class based view
 ### get from db and new url to access
 ```
