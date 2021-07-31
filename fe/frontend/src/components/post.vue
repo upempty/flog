@@ -19,6 +19,11 @@
           placeholder="content"
         ></textarea>
       </div>
+      <div>jjjj</div>
+      <div>
+        <mavon-editor ref="editor" v-model="article_value"> </mavon-editor>
+      </div>
+      <div>jjjend</div>
       <div class="form-group">
         <button class="btn btn-block btn-success" @click="saveBlog()">
           Save
@@ -55,17 +60,21 @@
 </template>
 
 <script>
-
+import {mavonEditor} from "mavon-editor";
+import 'mavon-editor/dist/css/index.css'
 export default {
   name: 'Post',
   props: {},
+  components: {mavonEditor},
   data () {
     return {
       baseUrl: 'http://127.0.0.1:8000/api/blog/',
       blogs: null,
       url: '',
       title: '',
-      content: ''
+      content: '',
+      article_value: '',
+      dooc: '',
     }
   },
   methods: {
