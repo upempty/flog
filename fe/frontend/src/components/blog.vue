@@ -7,10 +7,10 @@
     </div>
 </template>
 <script>
-//import {mavonEditor} from "mavon-editor";
+import {mavonEditor} from "mavon-editor";
 //should use this{} !!! import {mavonEditor} from "mavon-editor";
 //should use components :{}
-//import "mavon-editor/dist/css/index.css";
+import "mavon-editor/dist/css/index.css";
 export default {
     name: "Create",
     components: {mavonEditor},
