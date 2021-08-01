@@ -12,7 +12,7 @@ class ArticleView(View):
         items = Article.objects.all() 
         data_values = []
         for i in items:
-            each = {'title': i.title, 'content': i.content}
+            each = {'title': i.title, 'description': i.description, 'content': i.content}
             data_values.append(each)
         result = {'data': data_values, 'msg': 'query', 'status': 200} 
         print('result: ', result)
@@ -34,10 +34,32 @@ class ArticleView(View):
         return JsonResponse(result)
 
     def put(self, request, *args, **kwargs):
-        result = {'data': [], 'msg': 'create', 'status': 200}
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'update', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        title = item.get('title')
+        #FeeItem.objects.filter(name=name).update(payid=payid, name=name)
+        ret = Article.objects.filter(title=title).update(**item)
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'update', 'status': 200}
         return JsonResponse(result)
+
     def delete(self, request, *args, **kwargs):
-        result = {'data': [], 'msg': 'create', 'status': 200}
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'delete', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        title = item.get('title')
+        ret = Article.objects.filter(title=title).delete()
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'delete', 'status': 200}
         return JsonResponse(result)
 
 class DecorationCartView(View):

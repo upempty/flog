@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-4">
       <div class="form-group">
-        <input type="hidden" v-model="url" />
+        <input type="hidden" v-model="toedit" />
       </div>
       <div class="form-group">
         <input
@@ -15,13 +15,12 @@
       <div class="form-group">
         <textarea
           class="form-control"
-          v-model="content"
-          placeholder="content"
+          v-model="description"
+          placeholder="description"
         ></textarea>
       </div>
-      <div>jjjj</div>
       <div>
-        <mavon-editor ref="editor" v-model="article_value"> </mavon-editor>
+        <mavon-editor ref=md v-model="content"> </mavon-editor>
       </div>
       <div>jjjend</div>
       <div class="form-group">
@@ -34,23 +33,28 @@
       <table class="table table-bordered table-hover">
         <thead>
           <th class="text-center">Title</th>
+          <th class="text-center">Desc</th>
           <th class="text-center">Content</th>
           <th class="text-center">Edit</th>
           <th class="text-center">Delete</th>
         </thead>
         <tbody>
-          <tr v-for="blog in blogs" :key="blog.url">
+          <tr v-for="blog in blogs" :key="blog.toedit">
             <td>{{ blog.title }}</td>
+            <td>{{ blog.description }}</td>
             <td>{{ blog.content }}</td>
             <td>
-              <button class="btn btn-success" @click="editBlog(blog)">
-                <i class="fa fa-edit"></i>
-              </button>
+              <el-button class="btn btn-success" @click="editBlog(blog)">
+              Edit
+              </el-button>
             </td>
             <td>
-              <button class="btn btn-success" @click="deleteBlog(blog)">
-                <i class="fa fa-trash"></i>
-              </button>
+              <el-button class="btn btn-success" @click="deleteBlog(blog)">
+              Del
+              </el-button>
+            </td>
+            <td>
+            <div class="content_html" v-html="blog.content"></div>
             </td>
           </tr>
         </tbody>
@@ -68,12 +72,12 @@ export default {
   components: {mavonEditor},
   data () {
     return {
-      baseUrl: 'http://127.0.0.1:8000/api/blog/',
       blogs: null,
-      url: '',
+      toedit: '',
       title: '',
-      content: '',
-      article_value: '',
+      description: '',
+      content: 'md content',
+      article_value: 'I am fei',
       dooc: '',
     }
   },
@@ -87,19 +91,21 @@ export default {
         this.blogs = res.data.data
         this.title = ''
         this.content = ''
+        this.toedit = ''
       })
         .catch(error => {
           console.log(error)
         })
     },
     saveBlog () {
-      if (this.url === '') {
+      if (this.toedit === '') {
         this.$axios({
           url: 'post/article/',
           method: 'post',
           data: {
             title: this.title,
-            content: this.content
+            description: this.description,
+            content: this.content 
           }})
           .then(() => {
             this.getAll()
@@ -110,7 +116,8 @@ export default {
           method: 'put',
           data: {
             title: this.title,
-            content: this.content
+            description: this.description,
+            content: this.conetent
           }})
           .then(() => {
             this.getAll()
@@ -118,7 +125,7 @@ export default {
       }
     },
     editBlog (blog) {
-      this.url = blog.url
+      this.toedit = '1'
       this.title = blog.title
       this.content = blog.content
     },
@@ -127,8 +134,8 @@ export default {
         url: 'post/article/',
         method: 'delete',
         data: {
-          title: this.title,
-          content: this.content
+          title: blog.title,
+          content: blog.content
         }}).then(() => {
         this.getAll()
       })

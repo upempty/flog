@@ -14,6 +14,7 @@ class FeeItem(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=50, verbose_name='Title')
-    content = models.CharField(max_length=600, verbose_name='Content')
+    description = models.CharField(max_length=500, null=True, verbose_name='desc')
+    content = models.CharField(max_length=800, verbose_name='Content')
     def __str__(self):
         return self.title
