@@ -20,11 +20,11 @@
         ></textarea>
       </div>
       <div>
-        <mavon-editor ref=md v-model="content"> </mavon-editor>
+        <mavon-editor ref="md" v-model="content"> </mavon-editor>
       </div>
       <div>jjjend</div>
       <div class="form-group">
-        <button class="btn btn-block btn-success" @click="saveBlog()">
+        <button class="btn btn-block btn-success" @click="saveBlog">
           Save
         </button>
       </div>
@@ -44,9 +44,9 @@
             <td>{{ blog.description }}</td>
             <td>{{ blog.content }}</td>
             <td>
-              <el-button class="btn btn-success" @click="editBlog(blog)">
+              <button class="btn btn-success" @click="editBlog(blog)">
               Edit
-              </el-button>
+              </button>
             </td>
             <td>
               <el-button class="btn btn-success" @click="deleteBlog(blog)">
@@ -54,7 +54,8 @@
               </el-button>
             </td>
             <td>
-            <div class="content_html" v-html="blog.content"></div>
+            <div class="markdown-body" v-html="blog.hh"></div>
+            <link href="https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css" rel="stylesheet" />
             </td>
           </tr>
         </tbody>
@@ -65,6 +66,7 @@
 
 <script>
 import {mavonEditor} from "mavon-editor";
+import marked from "marked";
 import 'mavon-editor/dist/css/index.css'
 export default {
   name: 'Post',
@@ -89,7 +91,12 @@ export default {
         params: {}
       }).then(res => {
         this.blogs = res.data.data
+        for (var x in this.blogs)
+        {
+            this.blogs[x].hh = marked(this.blogs[x].content)
+        }
         this.title = ''
+        this.description = ''
         this.content = ''
         this.toedit = ''
       })
@@ -105,7 +112,7 @@ export default {
           data: {
             title: this.title,
             description: this.description,
-            content: this.content 
+            content: this.content
           }})
           .then(() => {
             this.getAll()
@@ -117,7 +124,7 @@ export default {
           data: {
             title: this.title,
             description: this.description,
-            content: this.conetent
+            content: this.content,
           }})
           .then(() => {
             this.getAll()
@@ -127,6 +134,7 @@ export default {
     editBlog (blog) {
       this.toedit = '1'
       this.title = blog.title
+      this.description = blog.description
       this.content = blog.content
     },
     deleteBlog (blog) {
@@ -148,4 +156,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+</style>

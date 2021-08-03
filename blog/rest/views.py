@@ -38,7 +38,7 @@ class ArticleView(View):
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'update', 'status': 200}
         '''
         body = request.body.decode()
-        print("body: ", body)
+        print("put body: ", body)
         item = json.loads(body)
         title = item.get('title')
         #FeeItem.objects.filter(name=name).update(payid=payid, name=name)
