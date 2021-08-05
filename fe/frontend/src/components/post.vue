@@ -5,7 +5,7 @@
         <input type="hidden" v-model="toedit" />
       </div>
       <div class="form-group">
-        <input
+        <el-input
           type="text"
           v-model="title"
           class="form-control"
@@ -13,20 +13,22 @@
         />
       </div>
       <div class="form-group">
-        <textarea
+        <el-input
+          type="textarea"
           class="form-control"
           v-model="description"
+          :rows="2"
           placeholder="description"
-        ></textarea>
+        />
       </div>
       <div>
         <mavon-editor ref="md" v-model="content"> </mavon-editor>
       </div>
       <div>jjjend</div>
       <div class="form-group">
-        <button class="btn btn-block btn-success" @click="saveBlog">
+        <el-button class="btn btn-block btn-success" @click="saveBlog">
           Save
-        </button>
+        </el-button>
       </div>
     </div>
     <div class="col-md-8">
@@ -44,9 +46,9 @@
             <td>{{ blog.description }}</td>
             <td>{{ blog.content }}</td>
             <td>
-              <button class="btn btn-success" @click="editBlog(blog)">
+              <el-button class="btn btn-success" @click="editBlog(blog)">
               Edit
-              </button>
+              </el-button>
             </td>
             <td>
               <el-button class="btn btn-success" @click="deleteBlog(blog)">
