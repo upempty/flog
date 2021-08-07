@@ -28,11 +28,11 @@
      </div>
     <div class='Listing'>
        <el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :header-cell-style="tableHeaderColor">
-         <!--<el-table-column type="selection" width="55"></el-table-column>-->
+         <el-table-column type="selection" width="55"></el-table-column>
          <el-table-column prop="payid" label="编号" width="80">
            <template slot-scope="{row, $index}">
-              <input class="edit-cell" v-if="showEdit[$index]" v-model="row.payid">
-              <span v-if="!showEdit[$index]">{{row.payid}}</span>
+              <input class="edit-cell" v-show="showEdit[$index]" v-model="row.payid">
+              <span v-show="!showEdit[$index]">{{row.payid}}</span>
            </template>
          </el-table-column>
          <el-table-column prop="name" label="项目" width="140"></el-table-column>
@@ -40,8 +40,8 @@
          <el-table-column prop="paydate" label="付款时间" width="200"></el-table-column>
          <el-table-column label="操作" width="200">
            <template slot-scope="scope">
-           <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-show="!showBtn[scope.$index]">编辑</el-button>
-           <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-show="showBtn[scope.$index]">save</el-button>
+           <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-if="!showBtn[scope.$index]">编辑</el-button>
+           <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-if="showBtn[scope.$index]">save</el-button>
            <el-button size="mini" type="info" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
            </template>
          </el-table-column>
@@ -192,12 +192,14 @@ export default {
     handle_edit (index, row) {
       alert('edit')
       alert(row.name)
+      alert(row.paydate)
+      alert(index)
       console.log(index, row)
       this.showEdit[index] = true
       this.showBtn[index] = true
       this.$set(this.showEdit, row, true)
       this.$set(this.showBtn, row, true)
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      alert(row.payid)
     },
     handle_save (index, row) {
       alert('handling saving')
@@ -205,7 +207,9 @@ export default {
       this.showBtn[index] = false
       this.$set(this.showEdit, row, false)
       this.$set(this.showBtn, row, false)
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      this.$nextTick(() => {
+        alert('tik')
+      })
       alert(row.payid)
     },
     current_change (currentPage) {
