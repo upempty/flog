@@ -31,17 +31,32 @@
          <!--<el-table-column type="selection" width="55"></el-table-column>-->
          <el-table-column prop="payid" label="编号" width="80">
            <template slot-scope="{row, $index}">
-              <input class="edit-cell" v-if="showEdit[$index]" v-model="row.payid">
-              <span v-if="!showEdit[$index]">{{row.payid}}</span>
+              <span>{{row.payid}}</span>
            </template>
          </el-table-column>
-         <el-table-column prop="name" label="项目" width="140"></el-table-column>
-         <el-table-column prop="fee" label="费用" width="120"></el-table-column>
-         <el-table-column prop="paydate" label="付款时间" width="200"></el-table-column>
+         <el-table-column prop="name" label="项目" width="140">
+           <template slot-scope="{row, $index}">
+              <input class="edit-cell" v-if="showEdit[$index]" v-model="row.name">
+              <span v-if="!showEdit[$index]">{{row.name}}</span>
+           </template>
+         </el-table-column>
+         <el-table-column prop="fee" label="费用" width="120">
+           <template slot-scope="{row, $index}">
+              <input class="edit-cell" v-if="showEdit[$index]" v-model="row.fee">
+              <span v-if="!showEdit[$index]">{{row.fee}}</span>
+           </template>
+         </el-table-column>
+         <el-table-column prop="paydate" label="付款时间" width="200">
+           <template slot-scope="{row, $index}">
+              <!--<input class="edit-cell" v-if="showEdit[$index]" v-model="row.paydate">-->
+              <el-date-picker v-if="showEdit[$index]" v-model="row.paydate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+              <span v-if="!showEdit[$index]">{{row.paydate}}</span>
+           </template>
+         </el-table-column>
          <el-table-column label="操作" width="200">
            <template slot-scope="scope">
-           <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-show="!showBtn[scope.$index]">编辑</el-button>
-           <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-show="showBtn[scope.$index]">save</el-button>
+           <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-if="!showBtn[scope.$index]">编辑</el-button>
+           <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-if="showBtn[scope.$index]">保存</el-button>
            <el-button size="mini" type="info" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
            </template>
          </el-table-column>
@@ -130,6 +145,18 @@ export default {
       })
       console.log('testend')
     },
+    requery () {
+      this.$axios({
+        url: 'decoration/cart/',
+        method: 'get',
+        params: {
+        }
+      }).then(res => {
+        res = res.data
+        this.ItemsFee = res.data
+        this.totalSize = this.ItemsFee.length
+      })
+    },
     on_search () {
       this.$axios({
         url: 'decoration/cart/',
@@ -190,9 +217,6 @@ export default {
       alert('handling deleted')
     },
     handle_edit (index, row) {
-      alert('edit')
-      alert(row.name)
-      console.log(index, row)
       this.showEdit[index] = true
       this.showBtn[index] = true
       this.$set(this.showEdit, row, true)
@@ -200,13 +224,26 @@ export default {
       this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
     },
     handle_save (index, row) {
-      alert('handling saving')
       this.showEdit[index] = false
       this.showBtn[index] = false
-      this.$set(this.showEdit, row, false)
-      this.$set(this.showBtn, row, false)
+      //this.$set(this.showEdit, row, false)
+      //this.$set(this.showBtn, row, false)
+      this.$axios({
+        url: 'decoration/cart/',
+        method: 'put',
+        data: {
+          payid: row.payid,
+          name: row.name,
+          fee: row.fee,
+          paydate: row.paydate
+        }
+      }).then(res => {
+        //res = res.data
+        //this.ItemsFee = res.data
+        //alert(res.msg)
+        requery()
+      })
       this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
-      alert(row.payid)
     },
     current_change (currentPage) {
       this.currentPage = currentPage

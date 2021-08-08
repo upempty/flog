@@ -106,8 +106,13 @@ class DecorationCartView(View):
         print("body: ", body)
         item = json.loads(body)
         name = item.get('name')
+        payid = item.get('payid')
         #FeeItem.objects.filter(name=name).update(payid=payid, name=name)
-        ret = FeeItem.objects.filter(name=name).update(**item)
+        ret = 0
+        if payid is None:
+            ret = FeeItem.objects.filter(name=name).update(**item)
+        else:
+            ret = FeeItem.objects.filter(payid=payid).update(**item)
         print('ret: ', ret) 
         items = [item]
         result = {'data': items, 'msg': 'update', 'status': 200}
