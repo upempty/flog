@@ -19,19 +19,17 @@
            <td><el-col width="15%"><el-input placeholder="项目名" v-model="InData.name"></el-input></el-col></td>
            <td><el-col width="15%"><el-input placeholder="费用" v-model="InData.fee"></el-input></el-col><td>
            <td><el-date-picker v-model="InData.paydate" type="datetime" placeholder="chosse time" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker></td>
-           <td><el-col width="15%"><el-button type="button" plain @click="on_add">添加</el-button></el-col></td>
-           <td><el-col width="15%"><el-button type="button" plain @click="on_query">查询刷新</el-button></el-col></td>
-           <td><el-col width="10%"><el-button type="button" plain @click="on_update">更新</el-button></el-col></td>
-           <td><el-col width="10%"><el-button type="button" plain @click="on_delete">删除</el-button></el-col></td>
+           <td><el-col width="15%"><el-button type="button" plain @click.native="on_add">添加</el-button></el-col></td>
          </tr>
        </table>
      </div>
     <div class='Listing'>
-       <el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :header-cell-style="tableHeaderColor">
+       <!--<el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :key="reflushm" :header-cell-style="tableHeaderColor">-->
+       <el-table :data="ItemsFee" ref="multipleTable" border :key="keyItem" :header-cell-style="tableHeaderColor">
          <!--<el-table-column type="selection" width="55"></el-table-column>-->
          <el-table-column prop="payid" label="编号" width="80">
-           <template slot-scope="{row, $index}">
-              <span>{{row.payid}}</span>
+           <template slot-scope="scope">
+              <span>{{scope.row.payid}}</span>
            </template>
          </el-table-column>
          <el-table-column prop="name" label="项目" width="140">
@@ -57,26 +55,29 @@
            <template slot-scope="scope">
            <el-button size="small" type="danger" @click="handle_edit(scope.$index, scope.row)" v-if="!showBtn[scope.$index]">编辑</el-button>
            <el-button size="small" type="danger" @click="handle_save(scope.$index, scope.row)" v-if="showBtn[scope.$index]">保存</el-button>
-           <el-button size="mini" type="info" @click="handle_delete(scope.$index, scope.row)">删除</el-button>
+           <el-button size="mini" type="info" @click.native="handle_delete(scope.$index, scope.row)">删除</el-button>
            </template>
          </el-table-column>
        </el-table>
      </div>
+     <!--
      <div style="text-align: left;margin-top: 5px;">
        <el-pagination
           background
           layout="prev, pager, next"
+          :key="keyItem" 
           :page-size="pagesize" :total="totalSize"
           @size-change="handleSizeChange"
           @current-change="current_change">
       </el-pagination>
     </div>
+    --> 
    </div>
 </template>
 
 <script>
 export default {
-  name: 'ItemsFee',
+  name: 'ItemsFeeA',
   data () {
     return { ItemsFee: [],
       InData: {},
@@ -85,7 +86,8 @@ export default {
       showBtn: [],
       currentPage: 1,
       pagesize: 6,
-      totalSize: 0
+      totalSize: 0,
+      keyItem: '' 
     }
   },
   mounted: function () {
@@ -101,37 +103,10 @@ export default {
       alert(this.ItemsFee[0].name)
       alert(res.status)
     })
+    this.keyItem = Math.random()
   },
-  methods: {
-    tableRowStyle ({ row, rowIndex }) {
-      return 'background-color: #F7F6Fd'
-    },
-    tableHeaderColor ({row, column, rowIndex, columnIndex}) {
-      if (rowIndex === 0) {
-        return 'background-color: lightblue;color: #fff;font-weight: 500;'
-      }
-    },
-    on_add () {
-      console.log('test')
-      console.log(this.InData.name, this.InData.fee)
-      this.$axios({
-        url: 'decoration/cart/',
-        method: 'post',
-        data: {
-          payid: this.InData.payid,
-          name: this.InData.name,
-          fee: this.InData.fee,
-          paydate: this.InData.paydate
-        }
-      }).then(res => {
-        res = res.data
-        alert(res.msg)
-      })
-      console.log('testend')
-    },
-    on_query () {
-      console.log('test query')
-      console.log(this.InData.name, this.InData.fee)
+  activated: {
+    requery2 () {
       this.$axios({
         url: 'decoration/cart/',
         method: 'get',
@@ -141,9 +116,19 @@ export default {
         res = res.data
         this.ItemsFee = res.data
         this.totalSize = this.ItemsFee.length
-        alert(res.msg)
       })
-      console.log('testend')
+      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      this.keyItem = Math.random()
+    }
+  },
+  methods: {
+    tableRowStyle ({ row, rowIndex }) {
+      return 'background-color: #F7F6Fd'
+    },
+    tableHeaderColor ({row, column, rowIndex, columnIndex}) {
+      if (rowIndex === 0) {
+        return 'background-color: lightblue;color: #fff;font-weight: 500;'
+      }
     },
     requery () {
       this.$axios({
@@ -156,8 +141,39 @@ export default {
         this.ItemsFee = res.data
         this.totalSize = this.ItemsFee.length
       })
+      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      this.keyItem = Math.random()
     },
-    on_search () {
+    on_add () {
+      this.$axios({
+        url: 'decoration/cart/',
+        method: 'post',
+        data: {
+          payid: this.InData.payid,
+          name: this.InData.name,
+          fee: this.InData.fee,
+          paydate: this.InData.paydate
+        }
+      }).then(res => {
+        res = res.data.data
+        //this.ItemsFee.append(res[0])
+        this.ItemsFee.push(res[0])
+        //this.ItemsFee.splice(this.totalSize, 0, res)
+        this.totalSize = this.ItemsFee.length
+        
+        //alert(res.msg)
+        //requery()
+      })
+      this.InData.payid = ''
+      this.InData.name = ''
+      this.InData.fee = ''
+      this.InData.paydate = ''
+      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      //this.$forceUpdate()
+      //this.keyItem = Math.random()
+      //this.keyItem = Math.random()
+    },
+   on_search () {
       this.$axios({
         url: 'decoration/cart/',
         method: 'get',
@@ -173,48 +189,24 @@ export default {
         alert(this.currentPage)
       })
     },
-    on_update () {
-      console.log('test update')
-      alert('updating')
-      console.log(this.InData.name, this.InData.fee)
-      this.$axios({
-        url: 'decoration/cart/',
-        method: 'put',
-        data: {
-          payid: this.InData.payid,
-          name: this.InData.name,
-          fee: this.InData.fee,
-          paydate: this.InData.paydate
-        }
-      }).then(res => {
-        res = res.data
-        this.ItemsFee = res.data
-        alert(res.msg)
-      })
-      console.log('testend')
-    },
-    on_delete () {
-      alert('deleting')
-      console.log(this.InData.name, this.InData.fee)
+    handle_delete (index, row) {
+      //this.ItemsFee.splice(index, 1)
       this.$axios({
         url: 'decoration/cart/',
         method: 'delete',
         data: {
-          payid: this.InData.payid,
-          name: this.InData.name,
-          fee: this.InData.fee,
-          paydate: this.InData.paydate
+          payid: row.payid,
+          name: row.name,
+          fee: row.fee,
+          paydate: row.paydate
         }
       }).then(res => {
-        res = res.data
-        alert(res.msg)
+        //res = res.data
+        //requery()
       })
-      console.log('testend')
-    },
-    handle_delete (index, row) {
-      alert('handling deleting')
+      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      this.$set(this.ItemsFee,index,row)
       this.ItemsFee.splice(index, 1)
-      alert('handling deleted')
     },
     handle_edit (index, row) {
       this.showEdit[index] = true
