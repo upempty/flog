@@ -24,8 +24,7 @@
        </table>
      </div>
     <div class='Listing'>
-       <!--<el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :key="reflushm" :header-cell-style="tableHeaderColor">-->
-       <el-table :data="ItemsFee" ref="multipleTable" border :key="keyItem" :header-cell-style="tableHeaderColor">
+       <el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :header-cell-style="tableHeaderColor">
          <!--<el-table-column type="selection" width="55"></el-table-column>-->
          <el-table-column prop="payid" label="编号" width="80">
            <template slot-scope="scope">
@@ -60,18 +59,15 @@
          </el-table-column>
        </el-table>
      </div>
-     <!--
      <div style="text-align: left;margin-top: 5px;">
        <el-pagination
           background
           layout="prev, pager, next"
-          :key="keyItem" 
           :page-size="pagesize" :total="totalSize"
           @size-change="handleSizeChange"
           @current-change="current_change">
       </el-pagination>
     </div>
-    --> 
    </div>
 </template>
 
@@ -99,27 +95,10 @@ export default {
       res = res.data
       this.ItemsFee = res.data
       this.totalSize = this.ItemsFee.length
-      console.log('testend-mount')
-      alert(this.ItemsFee[0].name)
-      alert(res.status)
+      //alert(this.ItemsFee[0].name)
+      //alert(res.status)
     })
     this.keyItem = Math.random()
-  },
-  activated: {
-    requery2 () {
-      this.$axios({
-        url: 'decoration/cart/',
-        method: 'get',
-        params: {
-        }
-      }).then(res => {
-        res = res.data
-        this.ItemsFee = res.data
-        this.totalSize = this.ItemsFee.length
-      })
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
-      this.keyItem = Math.random()
-    }
   },
   methods: {
     tableRowStyle ({ row, rowIndex }) {
@@ -129,20 +108,6 @@ export default {
       if (rowIndex === 0) {
         return 'background-color: lightblue;color: #fff;font-weight: 500;'
       }
-    },
-    requery () {
-      this.$axios({
-        url: 'decoration/cart/',
-        method: 'get',
-        params: {
-        }
-      }).then(res => {
-        res = res.data
-        this.ItemsFee = res.data
-        this.totalSize = this.ItemsFee.length
-      })
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
-      this.keyItem = Math.random()
     },
     on_add () {
       this.$axios({
@@ -173,7 +138,7 @@ export default {
       //this.keyItem = Math.random()
       //this.keyItem = Math.random()
     },
-   on_search () {
+    on_search () {
       this.$axios({
         url: 'decoration/cart/',
         method: 'get',
@@ -185,8 +150,8 @@ export default {
         this.ItemsFee = res.data
         this.totalSize = this.ItemsFee.length
         this.currentPage = 1
-        alert(this.totalSize)
-        alert(this.currentPage)
+        //alert(this.totalSize)
+        //alert(this.currentPage)
       })
     },
     handle_delete (index, row) {
@@ -203,10 +168,15 @@ export default {
       }).then(res => {
         //res = res.data
         //requery()
+        alert(this.currentPage)
+        let id = (this.currentPage-1)*this.pagesize+index
+        //alert(id)
+        this.ItemsFee.splice(id, 1)
+        this.totalSize = this.totalSize - 1
+        this.currentPage = 1
       })
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
-      this.$set(this.ItemsFee,index,row)
-      this.ItemsFee.splice(index, 1)
+      //this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      //this.$set(this.ItemsFee,index,row)
     },
     handle_edit (index, row) {
       this.showEdit[index] = true
@@ -233,9 +203,9 @@ export default {
         //res = res.data
         //this.ItemsFee = res.data
         //alert(res.msg)
-        requery()
+        this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+        //requery()
       })
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
     },
     current_change (currentPage) {
       this.currentPage = currentPage
