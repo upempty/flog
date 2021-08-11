@@ -24,7 +24,7 @@
        </table>
      </div>
     <div class='Listing'>
-       <el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border :header-cell-style="tableHeaderColor">
+       <el-table :data="ItemsFee.slice((currentPage-1)*pagesize, currentPage*pagesize)" ref="multipleTable" border show-summary :header-cell-style="tableHeaderColor">
          <!--<el-table-column type="selection" width="55"></el-table-column>-->
          <el-table-column prop="payid" label="编号" width="80">
            <template slot-scope="scope">
@@ -68,6 +68,9 @@
           @current-change="current_change">
       </el-pagination>
     </div>
+    <div class="SSum">Total Fee (RMB): {{ sumFee }}
+      <!--<input v-model="sumFee" placeholder="edit me">-->
+    </div>    
    </div>
 </template>
 
@@ -83,7 +86,7 @@ export default {
       currentPage: 1,
       pagesize: 6,
       totalSize: 0,
-      keyItem: '' 
+      sumFee: 0 
     }
   },
   mounted: function () {
@@ -97,8 +100,13 @@ export default {
       this.totalSize = this.ItemsFee.length
       //alert(this.ItemsFee[0].name)
       //alert(res.status)
+      alert(this.sumFee)
+      let t = this.ItemsFee
+      alert(this.totalSize)
+      this.test()
+      this.sumFee = this.calc_sum(this.ItemsFee)
+      alert(this.sumFee)
     })
-    this.keyItem = Math.random()
   },
   methods: {
     tableRowStyle ({ row, rowIndex }) {
@@ -108,6 +116,17 @@ export default {
       if (rowIndex === 0) {
         return 'background-color: lightblue;color: #fff;font-weight: 500;'
       }
+    },
+    test () {
+      alert('test')
+    },
+    calc_sum: function(fees) {
+      alert('in')
+      var total = 0
+      for (var i=0; i < fees.length; i++) {
+        total = parseInt(fees[i].fee) + total
+      }
+      return total
     },
     on_add () {
       this.$axios({
@@ -125,7 +144,8 @@ export default {
         this.ItemsFee.push(res[0])
         //this.ItemsFee.splice(this.totalSize, 0, res)
         this.totalSize = this.ItemsFee.length
-        
+        this.sumFee = this.calc_sum(this.ItemsFee)
+        alert(this.sumFee)
         //alert(res.msg)
         //requery()
       })
@@ -133,7 +153,8 @@ export default {
       this.InData.name = ''
       this.InData.fee = ''
       this.InData.paydate = ''
-      this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
+      //calc_sum()
+      //this.$nextTick(() => {this.$refs.multipleTable.doLayout(); this.sumFee = 32})
       //this.$forceUpdate()
       //this.keyItem = Math.random()
       //this.keyItem = Math.random()
@@ -150,6 +171,8 @@ export default {
         this.ItemsFee = res.data
         this.totalSize = this.ItemsFee.length
         this.currentPage = 1
+        this.sumFee = calc_sum(this.ItemsFee)
+        alert(this.sumFee)
         //alert(this.totalSize)
         //alert(this.currentPage)
       })
@@ -174,8 +197,10 @@ export default {
         this.ItemsFee.splice(id, 1)
         this.totalSize = this.totalSize - 1
         this.currentPage = 1
+        this.sumFee = this.calc_sum(this.ItemsFee)
+        alert(this.sumFee)
+        this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
       })
-      //this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
       //this.$set(this.ItemsFee,index,row)
     },
     handle_edit (index, row) {
@@ -203,6 +228,8 @@ export default {
         //res = res.data
         //this.ItemsFee = res.data
         //alert(res.msg)
+        //todo
+        this.sumFee = this.calc_sum(this.ItemsFee)
         this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
         //requery()
       })
