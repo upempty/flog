@@ -100,12 +100,8 @@ export default {
       this.totalSize = this.ItemsFee.length
       //alert(this.ItemsFee[0].name)
       //alert(res.status)
-      alert(this.sumFee)
-      let t = this.ItemsFee
-      alert(this.totalSize)
-      this.test()
+      //alert(this.sumFee)
       this.sumFee = this.calc_sum(this.ItemsFee)
-      alert(this.sumFee)
     })
   },
   methods: {
@@ -117,11 +113,7 @@ export default {
         return 'background-color: lightblue;color: #fff;font-weight: 500;'
       }
     },
-    test () {
-      alert('test')
-    },
     calc_sum: function(fees) {
-      alert('in')
       var total = 0
       for (var i=0; i < fees.length; i++) {
         total = parseInt(fees[i].fee) + total
@@ -145,7 +137,7 @@ export default {
         //this.ItemsFee.splice(this.totalSize, 0, res)
         this.totalSize = this.ItemsFee.length
         this.sumFee = this.calc_sum(this.ItemsFee)
-        alert(this.sumFee)
+        //alert(this.sumFee)
         //alert(res.msg)
         //requery()
       })
@@ -153,7 +145,6 @@ export default {
       this.InData.name = ''
       this.InData.fee = ''
       this.InData.paydate = ''
-      //calc_sum()
       //this.$nextTick(() => {this.$refs.multipleTable.doLayout(); this.sumFee = 32})
       //this.$forceUpdate()
       //this.keyItem = Math.random()
@@ -171,8 +162,8 @@ export default {
         this.ItemsFee = res.data
         this.totalSize = this.ItemsFee.length
         this.currentPage = 1
-        this.sumFee = calc_sum(this.ItemsFee)
-        alert(this.sumFee)
+        this.sumFee = this.calc_sum(this.ItemsFee)
+        //alert(this.sumFee)
         //alert(this.totalSize)
         //alert(this.currentPage)
       })
@@ -191,14 +182,14 @@ export default {
       }).then(res => {
         //res = res.data
         //requery()
-        alert(this.currentPage)
+        //alert(this.currentPage)
         let id = (this.currentPage-1)*this.pagesize+index
         //alert(id)
         this.ItemsFee.splice(id, 1)
         this.totalSize = this.totalSize - 1
         this.currentPage = 1
         this.sumFee = this.calc_sum(this.ItemsFee)
-        alert(this.sumFee)
+        //alert(this.sumFee)
         this.$nextTick(() => {this.$refs.multipleTable.doLayout();})
       })
       //this.$set(this.ItemsFee,index,row)
