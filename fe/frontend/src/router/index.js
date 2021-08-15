@@ -6,6 +6,7 @@ import User from '@/components/user'
 import ItemsFeeA from '@/components/decoration'
 import Blog from '@/components/blog'
 import Post from '@/components/post'
+import Login from '@/components/login'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ export default new Router({
         path: '/',
         name: 'First',
         component: First
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login
       },
       {
         path: '/user',
