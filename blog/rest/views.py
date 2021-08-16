@@ -5,11 +5,53 @@ from django.http import JsonResponse
 from rest.models import FeeItem
 from rest.models import Article
 import json
+from django.contrib.auth.hashers import check_password, make_password
+
+class Login(View):
+    def post(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        name = item.get('username')
+        pwd = item.get('password')
+        '''
+        user = models.User.objects.filter(username=username)
+        if user:
+            check_pwd = check_password(password, user[0].password)
+            if check_pwd:
+                user = models.User.objects.get(username=username)
+                Token.objects.get_or_create(user=user)
+                token = Token.objects.get(user=user)
+            else:
+               return JsonResponse({})
+        else:
+            return Response({})
+
+        userinfo = {
+            'token': token.key,
+            'username': user.username,
+        }
+        #payid = item.get('payid')
+        #ret = FeeItem.objects.create(payid=payid, name=name, fee=fee, paydate=paydate)
+        items = [userinfo]
+        '''
+        items = []
+        result = {'data': items, 'msg': 'login', 'status': 200}
+        return JsonResponse(result)
+
 
 class ArticleView(View):
     def get(self, request, *args, **kwargs):
+        title = request.GET.get('title')
+        print('title:', title)
         items = []
-        items = Article.objects.all() 
+        if title:
+            items = Article.objects.filter(title__icontains=title)
+        else:
+            items = Article.objects.all() 
         data_values = []
         for i in items:
             each = {'title': i.title, 'description': i.description, 'content': i.content}

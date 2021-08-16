@@ -7,6 +7,7 @@ import ItemsFeeA from '@/components/decoration'
 import Blog from '@/components/blog'
 import Post from '@/components/post'
 import Login from '@/components/login'
+import Article from '@/components/article'
 
 Vue.use(Router)
 
@@ -45,7 +46,12 @@ export default new Router({
         path: '/post',
         name: 'Post',
         component: Post
-      }
+      },
+      {
+        path: '/article',
+        name: 'Article',
+        component: Article
+      },
       ]
     }
   ]

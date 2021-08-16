@@ -42,7 +42,7 @@
         </thead>
         <tbody>
           <tr v-for="blog in blogs" :key="blog.toedit">
-            <td>{{ blog.title }}</td>
+            <td @click="getArticle(blog.title)">{{ blog.title }}</td>
             <td>{{ blog.description }}</td>
             <td>{{ blog.content }}</td>
             <td>
@@ -86,6 +86,10 @@ export default {
     }
   },
   methods: {
+    getArticle(title) {
+      //alert(title)
+      this.$router.push({name:'Article', query:{'title': title}})
+    },
     getAll () {
       this.$axios({
         url: 'post/article/',
