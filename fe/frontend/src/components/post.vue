@@ -22,7 +22,7 @@
         />
       </div>
       <div>
-        <mavon-editor ref="md" v-model="content"> </mavon-editor>
+        <mavon-editor ref="md" v-model="content" @imgAdd="$imgAdd"> </mavon-editor>
       </div>
       <div>jjjend</div>
       <div class="form-group">
@@ -69,7 +69,8 @@
 <script>
 import {mavonEditor} from "mavon-editor";
 import marked from "marked";
-import 'mavon-editor/dist/css/index.css'
+import 'mavon-editor/dist/css/index.css';
+import Qs from "qs";
 export default {
   name: 'Post',
   props: {},
@@ -109,6 +110,19 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+
+    $imgAdd(pos, file) {
+        this.$axios({
+          url: 'post/article/',
+          method: 'post',
+          data: Qs.stringify({
+            img: JSON.stringify({url: file['miniurl'], name: file['name'] })
+          })
+          }).then((res) => {
+            alert(res.data.data)
+            this.$refs.md.$img2Url(pos, res.data.data)
+          })
     },
     saveBlog () {
       if (this.toedit === '') {
