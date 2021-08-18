@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from rest.models import FeeItem
 from rest.models import Article
 import json
+import base64
+import time
 from django.contrib.auth.hashers import check_password, make_password
 
 class Login(View):
@@ -64,6 +66,32 @@ class ArticleView(View):
         '''
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
         '''
+        host = 'http://150.158.168.151:9000/'
+        img = request.POST.get('img')
+        '''
+        body = request.body.decode()
+        item = json.loads(body)
+        img = item.get('img')
+        '''
+        '''
+        img = request.POST.get('img')
+        '''
+        if img is not None:
+            print('img ok')
+            img = json.loads(img)
+            img_url = img['url']
+            img_name = img['name']
+            img_url_list = img_url.split(',')
+            img_data = base64.b64decode(img_url_list[1])
+            image_name = int(round(time.time() * 1000))
+            img_url = 'media/img' + '/' + str(image_name) + '-' + img_name
+            with open(img_url, 'wb') as f:
+                f.write(img_data)
+            u = host + img_url
+            result = {'data': u, 'msg': 'create', 'status': 200}
+            return JsonResponse(result)
+        else:
+            print('img emtpy')
         body = request.body.decode()
         print("body: ", body)
         item = json.loads(body)
