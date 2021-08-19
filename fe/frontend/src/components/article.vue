@@ -1,9 +1,9 @@
 <template>
   <div id="article">
-
     <div class="article__title">
-<!--      <h4 v-text="article_title"></h4>-->
+     <h4 v-text="title"></h4>
     </div>
+    <div>{{description}}</div>
     <div class="article__text" v-html="article_html"></div>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style scoped>
-.article__text >>> img {
+.article__title >>> img {
   width: -moz-available;
   margin: 5px;
   max-width: 400px;
