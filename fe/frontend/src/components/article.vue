@@ -1,9 +1,10 @@
 <template>
   <div id="article">
     <div class="article__title">
-     <h4 v-text="title"></h4>
+    <h2 v-text="title"></h2>
     </div>
-    <div>{{description}}</div>
+    <el-divider></el-divider>
+    <div>Descripton: {{description}}</div>
     <div class="article__text" v-html="article_html"></div>
   </div>
 </template>
@@ -47,10 +48,12 @@ export default {
 </script>
 
 <style scoped>
-.article__title >>> img {
+.article__title {
   width: -moz-available;
   margin: 5px;
   max-width: 400px;
+  color: #E6A23C;
+  height: 20px;
 }
 #article{
   border: #C0C4CC .1rem solid;
