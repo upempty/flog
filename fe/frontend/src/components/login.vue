@@ -65,14 +65,23 @@
             password: this.form.password
           }
         }).then(res => {
-          let articles = res.data.data
-          alert(res.data.msg)
-          alert(res.data.data[0].username)
+          let result = res.data
+          alert(result.msg)
+          //alert(res.status)
+          if (result.msg == 'succeed to login') {
+            alert(result.data[0].username)
+            alert(result.data[0].token)
+            //sessionStorage.setItem('user', this.form.username);
+            sessionStorage.setItem('user', result.data[0].username);
+            sessionStorage.setItem('token',result.data[0].token)
+            //localStorage.setItem('token',result.data[0].token)
+            this.$router.push("/");
+          }
+          else {
+            alert('relogin please')
+          }
         })
 
-
-            sessionStorage.setItem('user', this.form.username);
-            this.$router.push("/");
           } else {
             this.dialogVisible = true;
             return false;

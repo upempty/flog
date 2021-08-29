@@ -8,6 +8,12 @@ from rest.models import User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 
+from rest_framework import permissions, pagination
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 
 import json
 import base64
@@ -20,34 +26,126 @@ class LoginView(View):
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
         '''
         body = request.body.decode()
-        print("body: ", body)
+        print("body for user login: ", body)
         item = json.loads(body)
         name = item.get('username')
         pwd = item.get('password')
         user = User.objects.filter(username=name)
-        print('aa---')
         if user:
-            print('user---')
+            print('user exists')
             check_pwd = check_password(pwd, user[0].password)
             if check_pwd:
                 user = User.objects.get(username=name)
                 Token.objects.get_or_create(user=user)
                 token = Token.objects.get(user=user)
             else:
-               return JsonResponse({'data': [], 'msg': 'login pwd wrong', 'status': 200})
+               return JsonResponse({'data': [], 'msg': 'failed to login, password wrong', 'status': 200})
         else:
-            print('user---null')
-            return JsonResponse({'data': [], 'msg': 'username wrong', 'status': 200})
+            print('user not exist')
+            return JsonResponse({'data': [], 'msg': 'failed to login, username wrong', 'status': 200})
 
         userinfo = {
             'token': token.key,
             'username': user.username,
         }
+        items = [userinfo]
+        result = {'data': items, 'msg': 'succeed to login', 'status': 200}
+        return JsonResponse(result)
+
+
+class ArticleAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        title = request.GET.get('title')
+        print('title:', title)
+        items = []
+        if title:
+            items = Article.objects.filter(title__icontains=title)
+        else:
+            items = Article.objects.all() 
+        data_values = []
+        for i in items:
+            each = {'title': i.title, 'description': i.description, 'content': i.content}
+            data_values.append(each)
+        result = {'data': data_values, 'msg': 'query', 'status': 200} 
+        print('result: ', result)
+        #return Response(result, json_dumps_params={"ensure_ascii": False})
+        return Response(result)
+
+    @permission_classes((IsAdminUser,))
+    def post(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
+        '''
+        host = 'http://150.158.168.151:9000/'
+        img = request.POST.get('img')
+        '''
+        body = request.body.decode()
+        item = json.loads(body)
+        img = item.get('img')
+        '''
+        '''
+        img = request.POST.get('img')
+        '''
+        if img is not None:
+            print('img ok')
+            img = json.loads(img)
+            img_url = img['url']
+            img_name = img['name']
+            img_url_list = img_url.split(',')
+            img_data = base64.b64decode(img_url_list[1])
+            image_name = int(round(time.time() * 1000))
+            img_url = 'media/img' + '/' + str(image_name) + '-' + img_name
+            with open(img_url, 'wb') as f:
+                f.write(img_data)
+            u = host + img_url
+            result = {'data': u, 'msg': 'create', 'status': 200}
+            return Response(result)
+        else:
+            print('img emtpy')
+        #body = request.body.decode()
+        #body = request.data.decode()
+        body = request.data
+        print("body: ", body)
+        #item = json.loads(body)
+        item = body
         #payid = item.get('payid')
         #ret = FeeItem.objects.create(payid=payid, name=name, fee=fee, paydate=paydate)
-        items = [userinfo]
-        result = {'data': items, 'msg': 'login', 'status': 200}
-        return JsonResponse(result)
+        ret = Article.objects.create(**item)
+        print('ret: ', ret)
+        items = [item]
+        result = {'data': items, 'msg': 'create', 'status': 200}
+        return Response(result)
+
+    def put(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'update', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("put body: ", body)
+        item = json.loads(body)
+        title = item.get('title')
+        #FeeItem.objects.filter(name=name).update(payid=payid, name=name)
+        ret = Article.objects.filter(title=title).update(**item)
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'update', 'status': 200}
+        return Response(result)
+
+    def delete(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'delete', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        title = item.get('title')
+        ret = Article.objects.filter(title=title).delete()
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'delete', 'status': 200}
+        return Response(result)
+
 
 
 class ArticleView(View):
