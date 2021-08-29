@@ -56,6 +56,21 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
+
+        this.$axios({
+          url: 'user/login/',
+          method: 'post',
+          data: {
+            username: this.form.username,
+            password: this.form.password
+          }
+        }).then(res => {
+          let articles = res.data.data
+          alert(res.data.msg)
+          alert(res.data.data[0].username)
+        })
+
+
             sessionStorage.setItem('user', this.form.username);
             this.$router.push("/");
           } else {

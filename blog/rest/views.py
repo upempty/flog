@@ -4,12 +4,17 @@ from django.http import JsonResponse
 # Create your views here.
 from rest.models import FeeItem
 from rest.models import Article
+from rest.models import User
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
+
+
 import json
 import base64
 import time
 from django.contrib.auth.hashers import check_password, make_password
 
-class Login(View):
+class LoginView(View):
     def post(self, request, *args, **kwargs):
         '''
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
@@ -19,18 +24,20 @@ class Login(View):
         item = json.loads(body)
         name = item.get('username')
         pwd = item.get('password')
-        '''
-        user = models.User.objects.filter(username=username)
+        user = User.objects.filter(username=name)
+        print('aa---')
         if user:
-            check_pwd = check_password(password, user[0].password)
+            print('user---')
+            check_pwd = check_password(pwd, user[0].password)
             if check_pwd:
-                user = models.User.objects.get(username=username)
+                user = User.objects.get(username=name)
                 Token.objects.get_or_create(user=user)
                 token = Token.objects.get(user=user)
             else:
-               return JsonResponse({})
+               return JsonResponse({'data': [], 'msg': 'login pwd wrong', 'status': 200})
         else:
-            return Response({})
+            print('user---null')
+            return JsonResponse({'data': [], 'msg': 'username wrong', 'status': 200})
 
         userinfo = {
             'token': token.key,
@@ -39,8 +46,6 @@ class Login(View):
         #payid = item.get('payid')
         #ret = FeeItem.objects.create(payid=payid, name=name, fee=fee, paydate=paydate)
         items = [userinfo]
-        '''
-        items = []
         result = {'data': items, 'msg': 'login', 'status': 200}
         return JsonResponse(result)
 

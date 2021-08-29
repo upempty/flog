@@ -23,5 +23,6 @@ urlpatterns = [
     path("firstV/", include("rest.urls")),
     path("decoration/", include("rest.urls")),
     path("post/", include("rest.urls")),
+    path("user/", include("rest.urls")),
     re_path(r"media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
 ]

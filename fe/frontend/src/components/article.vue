@@ -4,8 +4,8 @@
     <h2 v-text="title"></h2>
     </div>
     <el-divider></el-divider>
-    <div>Descripton: {{description}}</div>
-    <div class="article__text" v-html="article_html"></div>
+    <div class="desc">>>Descripton: {{description}}</div>
+    <div class="article__text" v-highlight v-html="article_html"></div>
   </div>
 </template>
 
@@ -17,9 +17,7 @@ export default {
   name: "Article",
   data(){
     return {
-      'title': this.$route.query.title,
-      'article_html':'',
-      'description':'',
+      'title': this.$route.query.title, 'article_html':'', 'description':'',
     }
   },
   created() {
@@ -54,6 +52,19 @@ export default {
   max-width: 400px;
   color: #E6A23C;
   height: 20px;
+}
+.desc {
+  margin: 5px;
+  max-width: 400px;
+  color: #000000;
+  font-size:15px;
+  line-height:1.5em;
+}
+.article__text {
+  margin: 5px;
+  max-width: 400px;
+  color: #808000;
+  line-height:1.5em;
 }
 #article{
   border: #C0C4CC .1rem solid;
