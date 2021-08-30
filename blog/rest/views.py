@@ -6,6 +6,7 @@ from rest.models import FeeItem
 from rest.models import Article
 from rest.models import User
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.authtoken.models import Token
 
 from rest_framework import permissions, pagination
@@ -55,6 +56,15 @@ class LoginView(View):
 
 class ArticleAPIView(APIView):
 
+    #ok one permission_classes = [IsAdminUser,]
+    #nok authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication,)
+    #permission_classes = (AllowAny,)
+    #authentication_classes = [BasicAuthentication]
+    permission_classes = (IsAdminUser,)
+    #ok permission_classes = (IsAuthenticated, )
+    #permission_classes = (IsAuthenticated, )
+
     def get(self, request, *args, **kwargs):
         title = request.GET.get('title')
         print('title:', title)
@@ -72,13 +82,13 @@ class ArticleAPIView(APIView):
         #return Response(result, json_dumps_params={"ensure_ascii": False})
         return Response(result)
 
-    @permission_classes((IsAdminUser,))
     def post(self, request, *args, **kwargs):
         '''
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
         '''
         host = 'http://150.158.168.151:9000/'
         img = request.POST.get('img')
+        print('APIView---')
         '''
         body = request.body.decode()
         item = json.loads(body)
