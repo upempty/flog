@@ -116,9 +116,9 @@ export default {
         this.$axios({
           url: 'post/article/',
           method: 'post',
-          data: Qs.stringify({
+          data: {
             img: JSON.stringify({url: file['miniurl'], name: file['name'] })
-          })
+          }
           }).then((res) => {
             alert(res.data.data)
             this.$refs.md.$img2Url(pos, res.data.data)
@@ -129,11 +129,12 @@ export default {
         this.$axios({
           url: 'post/article/',
           method: 'post',
-          data: {
-            title: this.title,
-            description: this.description,
-            content: this.content
-          }})
+          data:{
+            'title': this.title,
+            'description': this.description,
+            'content': this.content
+          }
+          })
           .then(() => {
             this.getAll()
           })

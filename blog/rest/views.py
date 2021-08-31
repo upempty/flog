@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from rest.models import FeeItem
 from rest.models import Article
 from rest.models import User
+from rest.permissions import IsAdminUserOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authtoken.models import Token
@@ -58,12 +59,11 @@ class ArticleAPIView(APIView):
 
     #ok one permission_classes = [IsAdminUser,]
     #nok authentication_classes = (TokenAuthentication,)
-    authentication_classes = (TokenAuthentication,)
     #permission_classes = (AllowAny,)
-    #authentication_classes = [BasicAuthentication]
-    permission_classes = (IsAdminUser,)
-    #ok permission_classes = (IsAuthenticated, )
+    #permission_classes = (IsAdminUser,)
     #permission_classes = (IsAuthenticated, )
+    permission_classes = [IsAdminUserOrReadOnly]
+    authentication_classes = [TokenAuthentication,]
 
     def get(self, request, *args, **kwargs):
         title = request.GET.get('title')
@@ -87,7 +87,11 @@ class ArticleAPIView(APIView):
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
         '''
         host = 'http://150.158.168.151:9000/'
-        img = request.POST.get('img')
+        #img = request.POST.get('img')
+        bb = request.body.decode()
+        bb = json.loads(bb)
+        #bb = request.POST
+        img = bb.get('img')
         print('APIView---')
         '''
         body = request.body.decode()
@@ -115,9 +119,12 @@ class ArticleAPIView(APIView):
             print('img emtpy')
         #body = request.body.decode()
         #body = request.data.decode()
-        body = request.data
+        #body = request.data
+        #body = request.data
+        #bb = json.loads(bb)
+        body = bb
         print("body: ", body)
-        #item = json.loads(body)
+
         item = body
         #payid = item.get('payid')
         #ret = FeeItem.objects.create(payid=payid, name=name, fee=fee, paydate=paydate)
