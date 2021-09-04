@@ -117,7 +117,9 @@ export default {
           url: 'post/article/',
           method: 'post',
           data: {
-            img: JSON.stringify({url: file['miniurl'], name: file['name'] })
+            //img: JSON.stringify({url: file['miniurl'], name: file['name'] })
+            //img: {'url': file['miniurl'], 'name': file['name'] }
+            img: {url: file['miniurl'], name: file['name'] }
           }
           }).then((res) => {
             alert(res.data.data)

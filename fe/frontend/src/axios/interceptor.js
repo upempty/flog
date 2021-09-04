@@ -3,7 +3,8 @@ import axios from "axios";
 import router from "@/router";
 import Vue from 'vue';
 const request = axios.create({
-    headers: {'content-type': 'application/x-www-form-urlencoded'}
+    //headers: {'content-type': 'application/x-www-form-urlencoded'}
+    headers: {'content-type': 'application/json'}
 })
 request.interceptors.request.use(
     config => {

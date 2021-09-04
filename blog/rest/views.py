@@ -103,7 +103,10 @@ class ArticleAPIView(APIView):
         '''
         if img is not None:
             print('img ok')
-            img = json.loads(img)
+            #img = json.loads(img)
+            #img = json.dumps(img)
+            print (img)
+
             img_url = img['url']
             img_name = img['name']
             img_url_list = img_url.split(',')
