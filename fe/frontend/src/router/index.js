@@ -7,6 +7,7 @@ import ItemsFeeA from '@/components/decoration'
 import Blog from '@/components/blog'
 import Post from '@/components/post'
 import Login from '@/components/login'
+import Register from '@/components/register'
 import Article from '@/components/article'
 
 Vue.use(Router)
@@ -21,6 +22,11 @@ export default new Router({
         path: '/',
         name: 'First',
         component: First
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register
       },
       {
         path: '/login',

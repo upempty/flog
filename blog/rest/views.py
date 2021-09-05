@@ -22,6 +22,39 @@ import base64
 import time
 from django.contrib.auth.hashers import check_password, make_password
 
+class RegisterAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body for user register: ", body)
+        item = json.loads(body)
+        name = item.get('username')
+        pwd = item.get('password')
+        email = item.get('email')
+        user = User.objects.filter(username=name)
+        if user:
+            print('user exists')
+            return JsonResponse({'data': [], 'msg': 'failed to register, name exists', 'status': 200})
+        else:
+            # Forbidden: /post/article/
+            #User.objects.create_user(username=name, password=pwd)
+            # to create super user for admin permission
+            User.objects.create_superuser(username=name, password=pwd, email=email)
+            user = User.objects.get(username=name)
+            Token.objects.get_or_create(user=user)
+            token = Token.objects.get(user=user)
+
+            userinfo = {
+                'token': token.key,
+                'username': user.username,
+            }
+            items = [userinfo]
+            result = {'data': items, 'msg': 'succeed to register', 'status': 200}
+            return JsonResponse(result)
+
+
 class LoginView(View):
     def post(self, request, *args, **kwargs):
         '''
