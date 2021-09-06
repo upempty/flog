@@ -75,6 +75,9 @@
             sessionStorage.setItem('user', result.data[0].username);
             sessionStorage.setItem('token',result.data[0].token)
             //localStorage.setItem('token',result.data[0].token)
+            //this.$store.commit("userStatus", true);
+            //this.$store.dispatch('setUser', true);
+            this.$store.dispatch('setUser', this.form.username);
             this.$router.push("/");
           }
           else {

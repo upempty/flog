@@ -9,7 +9,11 @@ import {mavonEditor} from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 //import axios from 'axios'
 import axios from "./axios/interceptor"
+import Vuex from 'vuex'
+import store from './store'
 
+
+Vue.use(Vuex)
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
 Vue.config.productionTip = false
@@ -19,5 +23,6 @@ Vue.prototype.$axios = axios
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
