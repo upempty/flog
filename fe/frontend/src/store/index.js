@@ -13,15 +13,14 @@ export default new Vuex.Store({
     user: state => state.user
   },
   mutations: {
-    userStatus (state, flag) {
-      //state.isLogin = flag
-      state.user = flag
+    userStatus (state, user) {
+      state.user = user
     }
   },
   //dispatcher
   actions: {
-    setUser ({commit}, flag) {
-      commit('userStatus', flag)
+    setUser ({commit}, user) {
+      commit('userStatus', user)
     }
   }
 })
