@@ -199,8 +199,7 @@ ModuleNotFoundError: No module named '_ssl'
 [root@VM-4-17-centos venv]#
 
 
-pkgutil库没装，装了就没事了。另外python3中已经提供了venv库，跟virtualenv功能一致，
-没必要用virtualenv了，直接python3 -m venv .venv就可以创建虚拟环境。
+python3 -m venv .venv to create virtual env. not using virtualenv.
 
 
 [root@VM-4-17-centos venv]# ls -lart
