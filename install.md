@@ -437,4 +437,22 @@ cf/cf
 滴滴嗒嗒, 小步向前! cf
 
 小桥流水人家，倚坐门前屋檐下，仰望满天星星，化作一片片柳絮在空中飘荡。
+
+
+
+  488  2022-02-08 14:49:40 git add *
+  489  2022-02-08 14:49:43 git status
+  491  2022-02-08 14:50:41 git config --global user.name 'upempty'
+  493  2022-02-08 14:51:14 git config --global user.email '184918308@qq.com'
+  494  2022-02-08 14:51:17 git commit -m 'new server update'
+  495  2022-02-08 14:51:25 git status
+  499  2022-02-08 14:52:16 git branch -a
+  # to get from web latest 502  2022-02-08 14:54:25 git pull
+  503  2022-02-08 14:54:41 pwd
+  504  2022-02-08 14:54:43 ls
+  505  2022-02-08 14:54:56 git push origin main
+
+
+
+
 ```
