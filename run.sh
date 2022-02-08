@@ -1,7 +1,7 @@
 
 # to use: source run.sh
-cd /home/cf/program
-source my_pyenv/bin/activate
+cd /home/cf/venv/.venv
+source bin/activate
 
-cd /home/cf/program/flog/blog/
+cd /home/cf/flog/blog/
 python manage.py runserver 0.0.0.0:9000

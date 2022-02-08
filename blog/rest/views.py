@@ -119,7 +119,7 @@ class ArticleAPIView(APIView):
         '''
         json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
         '''
-        host = 'http://150.158.168.151:9000/'
+        host = 'http://81.68.228.238:9000/'
         #img = request.POST.get('img')
         bb = request.body.decode()
         bb = json.loads(bb)

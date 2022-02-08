@@ -1,5 +1,5 @@
 
 # source client.sh
-cd /home/cf/program/flog/fe/frontend
+cd /home/cf/flog/fe/frontend
 # cnpm install
 cnpm run dev
