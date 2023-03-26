@@ -88,8 +88,7 @@ export default {
   },
   methods: {
     getArticle(title) {
-      //alert(title)
-      this.$router.push({name:'Article', query:{'title': title}})
+      this.$router.push({name:'Article', query:{title: title}})
     },
     getAll () {
       this.$axios({

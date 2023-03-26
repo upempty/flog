@@ -11,24 +11,26 @@
 
 <script>
 // import axios from "axios";
-import marked from "marked";
+//ok import {marked} from 'marked';
+//nok import marked from 'marked';
+import {marked} from 'marked';
 import 'mavon-editor/dist/css/index.css'
 export default {
   name: "Article",
   data(){
     return {
-      'title': this.$route.query.title, 'article_html':'', 'description':'',
+      'title': this.$route.query.title, article_html:'xxx', 'description':'',
     }
   },
   created() {
-    this.getArticle()
+    this.getArticleDetail()
   },
   mounted() {
   },
   watch: {
   },
   methods:{
-    getArticle() {
+    getArticleDetail() {
       this.$axios({
         url: 'post/article/',
         method: 'get',
@@ -37,8 +39,8 @@ export default {
         }
       }).then(res => {
         let articles = res.data.data
-        this.article_html = marked(articles[0].content)
         this.description = articles[0].description
+        this.article_html = marked(articles[0].content) 
       })
     },
   }
