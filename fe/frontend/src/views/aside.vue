@@ -3,8 +3,8 @@
   <el-menu-item index="/decoration">House Decoration</el-menu-item>
   <el-submenu index="sample">
     <template slot="title">My Blog</template>
-    <el-menu-item index="/blog">Blog</el-menu-item>
     <el-menu-item index="/post">Post</el-menu-item>
+    <el-menu-item index="/articles">Articles</el-menu-item>
   </el-submenu>
   <el-menu-item index="4">ContactMe</el-menu-item>
 </el-menu>

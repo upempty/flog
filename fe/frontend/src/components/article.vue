@@ -6,6 +6,11 @@
     <el-divider></el-divider>
     <div class="desc">>>Descripton: {{description}}</div>
     <div class="article__text" v-highlight v-html="article_html"></div>
+    <div> 
+      <el-button class="btn btn-block btn-success" @click="toArticles">
+        Back To Article List
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -30,9 +35,12 @@ export default {
   watch: {
   },
   methods:{
+    toArticles() {
+      this.$router.push({name:'Articles'})
+    },
     getArticleDetail() {
       this.$axios({
-        url: 'post/article/',
+        url: 'rest/article/',
         method: 'get',
         params: {
           title: this.$route.query.title

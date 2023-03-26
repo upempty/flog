@@ -29,39 +29,10 @@
         <el-button class="btn btn-block btn-success" @click="saveBlog">
           Save
         </el-button>
+        <el-button class="btn btn-block btn-success" @click="toArticles">
+          Back To Article List 
+        </el-button>
       </div>
-    </div>
-    <div class="col-md-8">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <th class="text-center">Title</th>
-          <th class="text-center">Desc</th>
-          <th class="text-center">Content</th>
-          <th class="text-center">Edit</th>
-          <th class="text-center">Delete</th>
-        </thead>
-        <tbody>
-          <tr v-for="blog in blogs" :key="blog.toedit">
-            <td @click="getArticle(blog.title)">{{ blog.title }}</td>
-            <td>{{ blog.description }}</td>
-            <td>{{ blog.content }}</td>
-            <td>
-              <el-button class="btn btn-success" @click="editBlog(blog)">
-              Edit
-              </el-button>
-            </td>
-            <td>
-              <el-button class="btn btn-success" @click="deleteBlog(blog)">
-              Del
-              </el-button>
-            </td>
-            <td>
-            <div class="markdown-body" v-html="blog.hh"></div>
-            <link href="https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css" rel="stylesheet" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
@@ -86,34 +57,38 @@ export default {
       dooc: '',
     }
   },
+  created() {
+    this.getArticleEdit()
+  },
   methods: {
-    getArticle(title) {
-      this.$router.push({name:'Article', query:{title: title}})
+    toArticles() {
+      this.$router.push({name:'Articles'})
     },
-    getAll () {
+    getArticleEdit() {
+      alert('getArticleEdit')
+      let t = this.$route.params.title
+      if (t === '') {
+        alert('new post')
+        return
+      }
+      this.toedit = 'l'
       this.$axios({
-        url: 'post/article/',
+        url: 'rest/article/',
         method: 'get',
-        params: {}
-      }).then(res => {
-        this.blogs = res.data.data
-        for (var x in this.blogs)
-        {
-            this.blogs[x].hh = marked(this.blogs[x].content)
+        params: {
+          title: this.$route.params.title
         }
-        this.title = ''
-        this.description = ''
-        this.content = ''
-        this.toedit = ''
+      }).then(res => {
+        let articles = res.data.data
+        this.title = articles[0].title
+        this.description = articles[0].description
+        //this.article_html = marked(articles[0].content)
+        this.content = articles[0].content
       })
-        .catch(error => {
-          console.log(error)
-        })
     },
-
     $imgAdd(pos, file) {
         this.$axios({
-          url: 'post/article/',
+          url: 'rest/article/',
           method: 'post',
           data: {
             //img: JSON.stringify({url: file['miniurl'], name: file['name'] })
@@ -128,7 +103,7 @@ export default {
     saveBlog () {
       if (this.toedit === '') {
         this.$axios({
-          url: 'post/article/',
+          url: 'rest/article/',
           method: 'post',
           data:{
             'title': this.title,
@@ -137,11 +112,11 @@ export default {
           }
           })
           .then(() => {
-            this.getAll()
+            //this.getAll()
           })
       } else {
         this.$axios({
-          url: 'post/article/',
+          url: 'rest/article/',
           method: 'put',
           data: {
             title: this.title,
@@ -149,30 +124,24 @@ export default {
             content: this.content,
           }})
           .then(() => {
-            this.getAll()
+            //this.getAll()
           })
       }
     },
-    editBlog (blog) {
-      this.toedit = '1'
-      this.title = blog.title
-      this.description = blog.description
-      this.content = blog.content
-    },
     deleteBlog (blog) {
       this.$axios({
-        url: 'post/article/',
+        url: 'rest/article/',
         method: 'delete',
         data: {
           title: blog.title,
           content: blog.content
         }}).then(() => {
-        this.getAll()
+        //this.getAll()
       })
     }
   },
   mounted () {
-    this.getAll()
+    //this.getAll()
   }
 }
 </script>

@@ -4,11 +4,13 @@ import Layout from '@/views/layout'
 import First from '@/components/first'
 import User from '@/components/user'
 import ItemsFeeA from '@/components/decoration'
-import Blog from '@/components/blog'
+
+import Articles from '@/components/articles'
+import Article from '@/components/article'
 import Post from '@/components/post'
+
 import Login from '@/components/login'
 import Register from '@/components/register'
-import Article from '@/components/article'
 
 Vue.use(Router)
 
@@ -44,19 +46,19 @@ export default new Router({
         component: ItemsFeeA
       },
       {
-        path: '/blog',
-        name: 'Blog',
-        component: Blog
-      },
-      {
-        path: '/post',
-        name: 'Post',
-        component: Post
+        path: '/articles',
+        name: 'Articles',
+        component: Articles 
       },
       {
         path: '/article',
         name: 'Article',
         component: Article
+      },
+      {
+        path: '/post',
+        name: 'Post',
+        component: Post 
       },
       ]
     }
