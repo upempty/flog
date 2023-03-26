@@ -1,6 +1,6 @@
 <template>
     <div>
-    <div>abc</div>
+    <div>Not to be used for this page</div>
     <div>
       <mavon-editor ref="editor" v-model="doc"> </mavon-editor>
     </div>

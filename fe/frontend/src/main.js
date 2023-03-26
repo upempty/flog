@@ -17,7 +17,7 @@ Vue.use(Vuex)
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'http://81.68.228.238:9000/'
+axios.defaults.baseURL = 'http://111.230.243.15:9000/'
 Vue.prototype.$axios = axios
 /* eslint-disable no-new */
 new Vue({
