@@ -47,6 +47,7 @@ export default {
         }
       }).then(res => {
         let articles = res.data.data
+        this.title = articles[0].title
         this.description = articles[0].description
         this.article_html = marked(articles[0].content) 
       })

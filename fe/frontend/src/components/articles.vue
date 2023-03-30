@@ -43,7 +43,16 @@
         </tbody>
       </table>
     </div>
+  <div class="row">
+   <div v-for="article in blogs">
+    <router-link :to="{ name: 'Article', query: { title: article.title }}"
+                  class="article-title">
+      {{ article.title }}
+    </router-link>
+    </div>
+   </div>
   </div>
+ </div>
 </template>
 
 <script>
@@ -120,4 +129,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .article-title {
+        font-size: large;
+        font-weight: bolder;
+        color: black;
+        text-decoration: none;
+        padding: 5px 0 5px 0;
+    }
 </style>
