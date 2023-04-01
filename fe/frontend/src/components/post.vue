@@ -65,10 +65,8 @@ export default {
       this.$router.push({name:'Articles'})
     },
     getArticleEdit() {
-      alert('getArticleEdit')
       let t = this.$route.params.title
       if (t === '') {
-        alert('new post')
         return
       }
       this.toedit = 'l'
@@ -96,7 +94,6 @@ export default {
             img: {url: file['miniurl'], name: file['name'] }
           }
           }).then((res) => {
-            alert(res.data.data)
             this.$refs.md.$img2Url(pos, res.data.data)
           })
     },
