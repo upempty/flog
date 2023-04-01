@@ -1,19 +1,31 @@
 <template>
-<el-menu :default-active="activeIndex" router=true class="el-menu-demo"  background-color="#D3DCE6" mode="horizontal" @select="handleSelect">
-  <el-menu-item index="/decoration">House Decoration</el-menu-item>
-  <el-submenu index="sample">
-    <template slot="title">My Blog</template>
-    <el-menu-item index="/post">Post</el-menu-item>
-    <el-menu-item index="/articles">Articles</el-menu-item>
+<el-menu class="el-menu-vertical-demo" ref="menus" :default-openeds="['1']" @close="handleClose" :default-active="$route.path" router=true background-color="#D3DCE6" mode="horizontal">
+  <el-submenu index="1">
+      <template slot="title"><i class="el-icon-menu"></i>导航二</template>
+        <el-menu-item-group>
+          <template slot="title">分组一</template>
+          <el-menu-item index="/decoration">House Decoration</el-menu-item>
+          <el-menu-item index="/post">Post</el-menu-item>
+          <el-menu-item index="/articles">Blog Posts</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="分组2">
+          <el-menu-item index="dd">选项3</el-menu-item>
+        </el-menu-item-group>
   </el-submenu>
-  <el-menu-item index="4">ContactMe</el-menu-item>
 </el-menu>
 </template>
 
 <script>
 export default {
-  name: 'Aside'
-}
+  name: 'Aside',
+  methods: {
+  handleClose(key, keyPath) 
+  {
+    this.$refs.menus.open(keyPath);
+  }
+  }
+} 
+
 </script>
 
 <style>

@@ -13,8 +13,8 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-container>
-      <el-aside width="150px">
+    <el-container style="height: 500px: boarder: 1px solid #eee">
+      <el-aside width="200px">
         <Aside />
 .      </el-aside>
       <el-main>
