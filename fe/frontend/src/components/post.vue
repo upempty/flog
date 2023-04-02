@@ -4,27 +4,31 @@
       <div class="form-group">
         <input type="hidden" v-model="toedit" />
       </div>
-      <div class="form-group">
-        <el-input
-          type="text"
-          v-model="title"
-          class="form-control"
-          placeholder="title"
-        />
-      </div>
-      <div class="form-group">
+     <h3>Blog</h3>
+     <div>Title</div>
+     <div font-size:0>
+     <el-input type="text" v-model="title" class="form-control" placeholder="title"></el-input>
+     </div>
+     
+     <div>Description</div>
+     <div font-size:0>
         <el-input
           type="textarea"
           class="form-control"
           v-model="description"
           :rows="2"
-          placeholder="description"
-        />
-      </div>
+          placeholder="description">
+        </el-input>
+     </div>
+
+
+
+      <div>Content</div>
       <div>
         <mavon-editor ref="md" v-model="content" @imgAdd="$imgAdd"> </mavon-editor>
       </div>
-      <div>jjjend</div>
+
+
       <div class="form-group">
         <el-button class="btn btn-block btn-success" @click="saveBlog">
           Save

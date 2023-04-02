@@ -52,4 +52,5 @@ export default {
     margin: 0;
     color: #303133;
   }
+
 </style>

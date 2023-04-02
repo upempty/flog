@@ -4,7 +4,12 @@
       <div class="form-group">
         <input type="hidden" v-model="toedit" />
       </div>
-      <div>jjjend</div>
+     <div class='ToSearch' font-size:0>
+       <table class="tables">
+       <td><el-col><el-input placeholder="blog name" v-model="SearchData.name" style="display:inline"></el-input></el-col></td>
+       <td><el-col><el-button type="button" plain @click="on_search">搜索</el-button></el-col></td>
+       </table>
+     </div>
       <div class="form-group">
         <el-button class="btn btn-block btn-success" @click="toPost">
           Post 
@@ -16,7 +21,6 @@
         <thead>
           <th class="text-center">Title</th>
           <th class="text-center">Desc</th>
-          <th class="text-center">Content</th>
           <th class="text-center">Edit</th>
           <th class="text-center">Delete</th>
         </thead>
@@ -24,7 +28,6 @@
           <tr v-for="blog in blogs" :key="blog.toedit">
             <td @click="getArticle(blog.title)">{{ blog.title }}</td>
             <td>{{ blog.description }}</td>
-            <td>{{ blog.content }}</td>
             <td>
               <el-button class="btn btn-success" @click="editBlog(blog)">
               Edit
@@ -36,21 +39,11 @@
               </el-button>
             </td>
             <td>
-            <div class="markdown-body" v-html="blog.hh"></div>
-            <link href="https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css" rel="stylesheet" />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  <div class="row">
-   <div v-for="article in blogs">
-    <router-link :to="{ name: 'Article', query: { title: article.title }}"
-                  class="article-title">
-      {{ article.title }}
-    </router-link>
-    </div>
-   </div>
   </div>
  </div>
 </template>
@@ -73,6 +66,7 @@ export default {
       content: 'md content',
       article_value: 'I am fei',
       dooc: '',
+      SearchData: {},
     }
   },
   methods: {
