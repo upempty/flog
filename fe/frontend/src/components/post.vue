@@ -5,11 +5,11 @@
         <el-form label-width="100px">
 
           <el-form-item>
-            <el-button type="primary" @click="saveBlog">提交</el-button>
+            <el-button type="primary" @click="saveBlog">Summit</el-button>
             <el-button type="primary" @click="toArticles">Return to Article List</el-button>
           </el-form-item>
 
-          <el-form-item label="标题">
+          <el-form-item label="Title">
             <el-input v-model="title"></el-input>
           </el-form-item>
 
@@ -23,7 +23,7 @@
           </el-input>
           </el-form-item>
 
-          <el-form-item label="ccc">
+          <el-form-item label="Text">
             <mavon-editor ref="md" v-model="content" @imgAdd="$imgAdd"> </mavon-editor>
           </el-form-item>          
 
