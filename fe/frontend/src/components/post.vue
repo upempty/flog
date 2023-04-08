@@ -1,43 +1,34 @@
 <template>
   <div class="row">
-    <div class="col-md-4">
-      <div class="form-group">
-        <input type="hidden" v-model="toedit" />
-      </div>
-     <h3>Blog</h3>
-     <div>Title</div>
-     <div font-size:0>
-     <el-input type="text" v-model="title" class="form-control" placeholder="title"></el-input>
+    <h3>Blog</h3>
+     <div>
+        <el-form label-width="100px">
+
+          <el-form-item>
+            <el-button type="primary" @click="saveBlog">提交</el-button>
+            <el-button type="primary" @click="toArticles">Return to Article List</el-button>
+          </el-form-item>
+
+          <el-form-item label="标题">
+            <el-input v-model="title"></el-input>
+          </el-form-item>
+
+          <el-form-item label="Description">
+          <el-input
+            type="textarea"
+            class="form-control"
+            v-model="description"
+            :rows="2"
+            placeholder="description">
+          </el-input>
+          </el-form-item>
+
+          <el-form-item label="ccc">
+            <mavon-editor ref="md" v-model="content" @imgAdd="$imgAdd"> </mavon-editor>
+          </el-form-item>          
+
+        </el-form>
      </div>
-     
-     <div>Description</div>
-     <div font-size:0>
-        <el-input
-          type="textarea"
-          class="form-control"
-          v-model="description"
-          :rows="2"
-          placeholder="description">
-        </el-input>
-     </div>
-
-
-
-      <div>Content</div>
-      <div>
-        <mavon-editor ref="md" v-model="content" @imgAdd="$imgAdd"> </mavon-editor>
-      </div>
-
-
-      <div class="form-group">
-        <el-button class="btn btn-block btn-success" @click="saveBlog">
-          Save
-        </el-button>
-        <el-button class="btn btn-block btn-success" @click="toArticles">
-          Back To Article List 
-        </el-button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -59,6 +50,13 @@ export default {
       content: 'md content',
       article_value: 'I am fei',
       dooc: '',
+      ruleForm: {
+        id: '',
+        title: '',
+        description: '',
+        content: ''
+      },
+
     }
   },
   created() {
@@ -70,10 +68,11 @@ export default {
     },
     getArticleEdit() {
       let t = this.$route.params.title
-      if (t === '') {
+      if (!t) {
+        this.toedit = ''
         return
       }
-      this.toedit = 'l'
+      this.toedit = 'edit_mode'
       this.$axios({
         url: 'rest/article/',
         method: 'get',

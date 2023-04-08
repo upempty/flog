@@ -1,4 +1,5 @@
 <template>
+
 <el-menu router=true background-color="#D3DCE6" mode="horizontal" class="menuAlign">
         <el-menu-item-group>
           <template slot="title">
@@ -23,11 +24,18 @@
           </el-menu-item>
         </el-menu-item-group>
 </el-menu>
+
 </template>
 
 <script>
 export default {
   name: 'Aside',
+
+  data() {
+    return {
+    }
+  },
+
   methods: {
 
   handleOpen(key, keyPath) 
