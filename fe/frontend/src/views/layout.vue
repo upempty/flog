@@ -1,22 +1,13 @@
 <template>
   <el-container>
+    <!-- el-container inside, if there is el-header, then it up down layout. or it will be left right layout -->
     <el-header>
-      <!--<Header> 小桥流水人家，倚坐门前屋檐下，仰望满天星星，化作一片片柳絮在空中飘荡。</Header>-->
-      <el-row :gutter="20">
-        <el-col :span="4"><div class="grid-content bg-purple">滴滴嗒嗒, 小步向前! {{user}}</div></el-col>
-        <el-col :span="16"><div class="grid-content bg-purple">小桥流水人家，倚坐门前屋檐下，仰望满天星星，化作一片片柳絮在空中飘荡。</div></el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-button type="text" @click="add_route_login">Login</el-button>
-            <el-button type="text" @click="add_route_register">Register</el-button>
-          </div>
-        </el-col>
-      </el-row>
+      <Header />
     </el-header>
     <el-container style="height: 500px: boarder: 1px solid #eee">
       <el-aside width="200px">
         <Aside />
-.      </el-aside>
+.     </el-aside>
       <el-main>
         <router-view />
       </el-main>
@@ -26,9 +17,11 @@
 
 <script>
 import Aside from '@/views/aside'
+import Header from '@/views/header'
 export default {
   name: 'Layout',
   components: {
+    Header,
     Aside
   },
   data() {
@@ -67,12 +60,6 @@ export default {
   z-index: 1000;
 }
 
-.el-header .fr {
-  float: right;
-}
-.el-header .el-menu {
-  border-bottom: none;
-}
 .el-aside, el-main {
   padding-top: 60px;
 }
@@ -81,9 +68,6 @@ export default {
   color: #333;
   text-align: center;
   line-height: 200px;
-}
-.el-aside .el-menu {
-  border-right: none;
 }
 .el-main {
   background-color: #E9EEF3;
