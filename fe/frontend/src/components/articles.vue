@@ -35,35 +35,6 @@
     </div>
 
     <div>
-    <!--
-    <div class="col-md-8">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <th class="text-center">Title</th>
-          <th class="text-center">Desc</th>
-          <th class="text-center">Edit</th>
-          <th class="text-center">Delete</th>
-        </thead>
-        <tbody>
-          <tr v-for="blog in blogs" :key="blog.toedit">
-            <td @click="getArticle(blog.title)">{{ blog.title }}</td>
-            <td>{{ blog.description }}</td>
-            <td>
-              <el-button class="btn btn-success" @click="editBlog(blog)">
-              Edit
-              </el-button>
-            </td>
-            <td>
-              <el-button class="btn btn-success" @click="deleteBlog(blog)">
-              Del
-              </el-button>
-            </td>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-     -->
 
     <el-table
       v-loading="listLoading"

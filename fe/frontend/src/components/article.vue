@@ -1,18 +1,28 @@
 <template>
   <div id="article">
-    <div class="article__title">
-    <h2 v-text="title"></h2>
-    </div>
-    <el-divider></el-divider>
-    <div class="desc">Descripton:</div>
-    <p class="post_desc">{{description}}</p>
-    <div class="article__text" v-highlight v-html="article_html"></div>
+
     <div> 
       <el-button class="btn btn-block btn-success" @click="toArticles">
         Back To Article List
       </el-button>
     </div>
 
+      <div class="article-wrap">
+      <div class="article-message">
+        <p class="article-title">
+          {{ title }}
+        </p>
+      </div>
+        
+        <div class="article-info">
+          Description: {{description}}
+        </div>
+
+    <div class="article-view">
+     <!--<div v-highlight v-viewer class="md-body" v-html="article_html"></div>-->
+     <div v-highlight v-html="article_html"></div>
+    </div>
+  </div>
   </div>
 
 </template>
@@ -31,6 +41,7 @@ export default {
     }
   },
   created() {
+
     this.getArticleDetail()
   },
   mounted() {
@@ -60,42 +71,47 @@ export default {
 </script>
 
 <style scoped>
-.article__title {
-  width: -moz-available;
-  margin: 5px;
-  max-width: 400px;
+
+.article {
+  padding: 30px 10px;
+}
+.article-wrap {
+  position: relative;
+  padding: 30px;
+  width: 90%;
+  background-color: #fff;
+  box-shadow: 0 0 5px 0 rgba(38, 42, 48, 0.1);
+}
+.article-message {
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.article-title {
+  font-size: 26px;
+  font-weight: 700;
   color: #E6A23C;
-  height: 20px;
-}
-.desc {
-  margin: 5px;
-  max-width: 800px;
-  color: #000000;
-  font-size:15px;
-  line-height:1.5em;
-}
-.article__text {
-  margin: 5px;
-  max-width: 800px;
-  color: #808000;
-  line-height:1.5em;
+  margin: 0;
 }
 
-#article1{
-  border: #C0C4CC .1rem solid;
-  background-color: #C0C4CC40;
+.article-info {
+  font-size: 14px;
+  #margin: 2px 0;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  flex-wrap: wrap;
 }
 
-#article{
-  border: #C0C4CC .1rem solid;
-  border-radius: .2rem;
-  padding: .4rem;
-  background-color: #C0C4CC40;
+.article-view {
+  position: relative;
+  width: 100%;
+  margin-top: 0px;
+  text-align: left;
 }
 
-
-.post_desc {
-  color: #777;
-  font-style: italic;
-}
 </style>

@@ -12,6 +12,16 @@ import axios from "./axios/interceptor"
 import Vuex from 'vuex'
 import store from './store'
 
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css'
+ 
+//create v-highlight global instruction
+Vue.directive('highlight',function (el) {
+  let blocks = el.querySelectorAll('pre code');
+  blocks.forEach((block)=>{
+    hljs.highlightBlock(block)
+  })
+})
 
 Vue.use(Vuex)
 Vue.use(ElementUI)
