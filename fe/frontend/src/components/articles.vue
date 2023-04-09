@@ -36,6 +36,8 @@
      </div>
     </div>
 
+    <div>
+    <!--
     <div class="col-md-8">
       <table class="table table-bordered table-hover">
         <thead>
@@ -63,6 +65,49 @@
           </tr>
         </tbody>
       </table>
+     -->
+
+    <el-table
+      v-loading="listLoading"
+      :data="blogs"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      :header-cell-style="{'background': '#e0e0e0'}"
+    >
+
+      <el-table-column label="Title" min-width="auto">
+        <template v-slot="{ row }">
+          <span class="link-type" @click="getArticle(row.title)">{{ row.title }}</span>
+        </template>
+      </el-table-column>
+	  
+      <el-table-column label="Description" min-width="auto">
+        <template v-slot="{ row }">
+          <span class="link-type">{{ row.description }}</span>
+        </template>
+      </el-table-column>
+	  
+      <el-table-column
+        label="Operation"
+        align="center"
+        width="auto"
+        class-name="small-padding fixed-width"
+      >
+        <template v-slot="scope">
+          <el-button type="primary" size="mini" @click="editBlogRow(scope.row.title)">Edit</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click.native.prevent="deleteBlogRow(scope.$index, blogs, scope.row.title)"
+            >Delete</el-button
+          >
+        </template>
+      </el-table-column>
+
+
+    </el-table>
     </div>
   </div>
  </div>
@@ -90,6 +135,16 @@ export default {
     }
   },
   methods: {
+
+    rowStyle({row, rowIndex}) {
+      if (rowIndex === 0) {
+        return {'background': '#e0e0e0'};
+      }
+      else {
+        return {};
+      }
+    },
+
     toPost() {
       this.$router.push({name: 'Post', params:{title: ''}})
     },
@@ -117,13 +172,11 @@ export default {
         })
     },
     onSearch () {
-      alert('search')
       this.$axios({
         url: 'rest/article/',
         method: 'GET',
         params: {title: this.SearchKey, }, 
       }).then(res => {
-        alert('sending response')
         this.blogs = res.data.data
         for (var x in this.blogs)
         {
@@ -136,8 +189,15 @@ export default {
       }).catch(error => {
           console.log(error)
         })
-      alert('tttjjwe')
     },
+
+
+    editBlogRow (title) {
+      this.toedit = 'edit_mode'
+      this.title = title
+      this.$router.push({name:'Post', params:{title: this.title}})
+    },
+ 
 
     editBlog (blog) {
       this.toedit = 'edit_mode'
@@ -146,6 +206,34 @@ export default {
       this.content = blog.content
       this.$router.push({name:'Post', params:{title: this.title}})
     },
+
+
+    deleteBlogRow (index, rows, title) {
+      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteArticle(title).then(response => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+        rows.splice(index, 1)
+      })
+    },
+
+    deleteArticle (title) {
+      return this.$axios({
+        url: 'rest/article/',
+        method: 'delete',
+        data: {
+          title: title,
+        }
+      })
+    },
+
     deleteBlog (blog) {
       this.$axios({
         url: 'rest/article/',
@@ -156,7 +244,8 @@ export default {
         }}).then(() => {
         this.getAll()
       })
-    }
+    },
+
   },
   mounted () {
     this.getAll()
