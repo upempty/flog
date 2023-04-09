@@ -4,18 +4,38 @@
       <div class="form-group">
         <input type="hidden" v-model="toedit" />
       </div>
-     <div class='ToSearch' font-size:0>
-       <table class="tables">
-       <td><el-col><el-input placeholder="blog name" v-model="SearchData.name" style="display:inline"></el-input></el-col></td>
-       <td><el-col><el-button type="button" plain @click="on_search">搜索</el-button></el-col></td>
-       </table>
+
+     <div class="filter-container">
+     Article List
      </div>
-      <div class="form-group">
-        <el-button class="btn btn-block btn-success" @click="toPost">
-          Post 
-        </el-button>
-      </div>
+     <div>
+
+      <el-form>
+          <el-row>
+           <el-col :span="4">
+          <el-form-item>
+            <el-input v-model="SearchKey"></el-input>
+          </el-form-item>
+          </el-col>
+
+           <el-col :span="2">
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" @click="onSearch">Search</el-button>
+          </el-form-item>
+          </el-col>
+
+           <el-col :span="4">
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-edit" @click="toPost">Post</el-button>
+          </el-form-item>
+          </el-col>
+
+          </el-row>
+       </el-form>
+
+     </div>
     </div>
+
     <div class="col-md-8">
       <table class="table table-bordered table-hover">
         <thead>
@@ -66,7 +86,7 @@ export default {
       content: 'md content',
       article_value: 'I am fei',
       dooc: '',
-      SearchData: {},
+      SearchKey: '',
     }
   },
   methods: {
@@ -96,8 +116,31 @@ export default {
           console.log(error)
         })
     },
+    onSearch () {
+      alert('search')
+      this.$axios({
+        url: 'rest/article/',
+        method: 'GET',
+        params: {title: this.SearchKey, }, 
+      }).then(res => {
+        alert('sending response')
+        this.blogs = res.data.data
+        for (var x in this.blogs)
+        {
+            this.blogs[x].hh = marked(this.blogs[x].content)
+        }
+        this.title = ''
+        this.description = ''
+        this.content = ''
+        this.toedit = ''
+      }).catch(error => {
+          console.log(error)
+        })
+      alert('tttjjwe')
+    },
+
     editBlog (blog) {
-      this.toedit = '1'
+      this.toedit = 'edit_mode'
       this.title = blog.title
       this.description = blog.description
       this.content = blog.content

@@ -24,29 +24,6 @@ export default {
     Header,
     Aside
   },
-  data() {
-    return {
-      //isLogin: this.$store.state.isLogin,
-      user22notupdate: this.$store.state.user,
-    }
-  },
-  computed: {
-    user() {
-      //return this.$store.state.isLogin;
-      return this.$store.state.user;
-    },
-    rname() {
-      return this.$store.getters.isLogin;
-    },
-  },
-  methods: {
-    add_route_login() {
-      this.$router.push('/login')
-    },
-    add_route_register() {
-      this.$router.push('/register')
-    },
-  }
 }
 </script>
 
