@@ -5,11 +5,9 @@
         <input type="hidden" v-model="toedit" />
       </div>
 
-     <div class="filter-container">
-     Article List
-     </div>
-     <div>
+     <h3> Article List</h3>
 
+     <div>
       <el-form>
           <el-row>
            <el-col :span="4">
