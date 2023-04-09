@@ -175,6 +175,11 @@ export default {
         method: 'GET',
         params: {title: this.SearchKey, }, 
       }).then(res => {
+        this.$message({
+            type: 'success',
+            message: 'Success!'
+          })
+
         this.blogs = res.data.data
         for (var x in this.blogs)
         {
@@ -207,15 +212,15 @@ export default {
 
 
     deleteBlogRow (index, rows, title) {
-      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Article to be deleted, to continue?', 'Prompt', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
         this.deleteArticle(title).then(response => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: 'Deleted successful!'
           })
         })
         rows.splice(index, 1)

@@ -4,7 +4,7 @@
         <el-menu-item-group>
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <span style="font-size:15px">Group1</span>
+            <span style="font-size:15px">House</span>
           </template>
           <el-menu-item index="/decoration">
           <span style="margin-left:10px">House Decoration</span>
@@ -14,7 +14,7 @@
         <el-menu-item-group>
           <template slot="title">
           <i class="el-icon-menu"></i>
-            <span style="font-size:15px">Group2</span>
+            <span style="font-size:15px">Blogs</span>
           </template>
           <el-menu-item index="/post">
           <span style="margin-left:10px">Post</span>

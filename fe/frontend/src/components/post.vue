@@ -101,6 +101,14 @@ export default {
           })
     },
     saveBlog () {
+      if (!this.title) {
+        this.$message({
+            type: 'success',
+            message: 'Please input title!'
+        })
+        return
+      }
+
       if (this.toedit === '') {
         this.$axios({
           url: 'rest/article/',
@@ -112,6 +120,10 @@ export default {
           }
           })
           .then(() => {
+            this.$message({
+            type: 'success',
+            message: 'Success!'
+            })
             //this.getAll()
           })
       } else {
@@ -124,9 +136,14 @@ export default {
             content: this.content,
           }})
           .then(() => {
+            this.$message({
+            type: 'success',
+            message: 'Success!'
+            })
             //this.getAll()
           })
       }
+      this.toArticles()
     },
     deleteBlog (blog) {
       this.$axios({
