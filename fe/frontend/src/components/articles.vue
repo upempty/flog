@@ -222,8 +222,11 @@ export default {
 
   },
   mounted () {
+  },
+  created () {
     this.getAll()
   }
+
 }
 </script>
 

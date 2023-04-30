@@ -108,7 +108,7 @@ class ArticleAPIView(APIView):
             items = Article.objects.all() 
         data_values = []
         for i in items:
-            each = {'title': i.title, 'description': i.description, 'content': i.content}
+            each = {'id': i.id, 'title': i.title, 'description': i.description, 'content': i.content}
             data_values.append(each)
         result = {'data': data_values, 'msg': 'query', 'status': 200} 
         print('result: ', result)

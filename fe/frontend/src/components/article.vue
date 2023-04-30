@@ -23,6 +23,9 @@
      <div v-highlight v-html="article_html"></div>
     </div>
   </div>
+  <div>
+  <Comments :articleId="articleid"/>
+  </div> 
   </div>
 
 </template>
@@ -33,18 +36,25 @@
 //nok import marked from 'marked';
 import {marked} from 'marked';
 import 'mavon-editor/dist/css/index.css'
+import Comments from '@/components/comments'
 export default {
   name: "Article",
+  components: {
+    Comments,
+  },
   data(){
     return {
-      'title': this.$route.query.title, article_html:'xxx', 'description':'',
+      title: this.$route.query.title, 
+      article_html:'xxx', 
+      description:'',
+      articleid: null,
     }
   },
   created() {
-
-    this.getArticleDetail()
+    //this.getArticleDetail()
   },
   mounted() {
+    this.getArticleDetail()
   },
   watch: {
   },
@@ -64,6 +74,7 @@ export default {
         this.title = articles[0].title
         this.description = articles[0].description
         this.article_html = marked(articles[0].content) 
+        this.articleid = articles[0].id
       })
     },
   }
