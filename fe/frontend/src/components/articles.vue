@@ -118,7 +118,8 @@ export default {
       this.$router.push({name: 'Post', params:{title: ''}})
     },
     getArticle(title) {
-      this.$router.push({name:'Article', query:{title: title}})
+      //to get blog.id by axios, then to pass the id to article.
+      this.$router.push({name:'Article', query:{title: title, aid: 73}})
     },
     getAll () {
       this.$axios({

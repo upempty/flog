@@ -4,6 +4,7 @@ from django.http import JsonResponse
 # Create your views here.
 from rest.models import FeeItem
 from rest.models import Article
+from rest.models import Comment 
 from rest.models import User
 from rest.permissions import IsAdminUserOrReadOnly
 from rest_framework.authentication import TokenAuthentication
@@ -199,6 +200,79 @@ class ArticleAPIView(APIView):
         items = [item]
         result = {'data': items, 'msg': 'delete', 'status': 200}
         return Response(result)
+
+
+class CommentAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        article_id = request.GET.get('article_id')
+        print('article_id:', article_id)
+        items = []
+        if article_id:
+            article1 = Article.objects.get(id=article_id)
+            if article1:
+              items = Comment.objects.filter(article=article1)
+        else:
+            #items = Comment.objects.all() 
+            items = []
+        data_values = []
+        for i in items:
+            each = {'article_id': article_id, 'message': i.message}
+            data_values.append(each)
+        result = {'data': data_values, 'msg': 'query', 'status': 200} 
+        print('result: ', result)
+        return Response(result)
+
+    def post(self, request, *args, **kwargs):
+        '''
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'create', 'status': 200}
+        '''
+        bb = request.body.decode()
+        bb = json.loads(bb)
+        item = bb
+        print("body: ", item)
+        article_id = item.get('article_id')
+        article1 = Article.objects.get(id=article_id)
+        msg = item.get('message')
+        ret = Comment.objects.create(article=article1, message=msg)
+        print('ret: ', ret)
+        items = [{'article_id':article_id, 'message':msg}]
+        result = {'data': items, 'msg': 'create', 'status': 200}
+        return Response(result)
+
+    def put(self, request, *args, **kwargs):
+        '''
+        Nooooo
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'update', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("put body: ", body)
+        item = json.loads(body)
+        title = item.get('title')
+        #FeeItem.objects.filter(name=name).update(payid=payid, name=name)
+        ret = Article.objects.filter(title=title).update(**item)
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'update', 'status': 200}
+        return Response(result)
+
+    def delete(self, request, *args, **kwargs):
+        '''
+        Nooooo
+        json format : {'data': [{'a':1, 'b':2}, {'c':3, 'd':4}], 'msg':'delete', 'status': 200}
+        '''
+        body = request.body.decode()
+        print("body: ", body)
+        item = json.loads(body)
+        title = item.get('title')
+        ret = Article.objects.filter(title=title).delete()
+        print('ret: ', ret) 
+        items = [item]
+        result = {'data': items, 'msg': 'delete', 'status': 200}
+        return Response(result)
+
+
+
 
 class DecorationCartView(APIView):
     def get(self, request, *args, **kwargs):

@@ -25,3 +25,14 @@ class Article(models.Model):
     content = models.CharField(max_length=800, verbose_name='Content')
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+
+    message = models.TextField()
+    #content = models.CharField(max_length=100, verbose_name='Content')
+ 
