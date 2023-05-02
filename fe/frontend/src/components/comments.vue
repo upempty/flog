@@ -17,14 +17,14 @@
 
     <hr>
     <div v-for="commentt in comments" :key="commentt.id">
-            <span>
+     <div class='ccomments'>
+            <span class='cheader'>
                comment: 
             </span>
-            <ul>
-             <li>
+             <div class='ccontent'>
                 {{ commentt.message }}
-             </li>
-            </ul>
+             </div>
+     </div>
      </div>
      <hr>
 
@@ -111,6 +111,21 @@ export default {
 
 .comment-area {
   padding: 30px 10px;
+}
+
+.ccontent {
+   font-size: large;
+   padding: 10px;
+ }
+
+.ccomments {
+  padding-top: 10px;
+  line-height: 90%;
+ }
+
+.cheader {
+  font-weight: bold;
+  color: darkorange;
 }
 
 </style>
