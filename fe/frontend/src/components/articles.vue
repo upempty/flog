@@ -118,8 +118,7 @@ export default {
       this.$router.push({name: 'Post', params:{title: ''}})
     },
     getArticle(title) {
-      //to get blog.id by axios, then to pass the id to article.
-      this.$router.push({name:'Article', query:{title: title, aid: 73}})
+      this.$router.push({name:'Article', query:{title: title}})
     },
     getAll () {
       this.$axios({
@@ -165,7 +164,6 @@ export default {
           console.log(error)
         })
     },
-
 
     editBlogRow (title) {
       this.toedit = 'edit_mode'

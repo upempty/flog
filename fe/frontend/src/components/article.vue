@@ -46,15 +46,13 @@ export default {
   data(){
     return {
       title: this.$route.query.title, 
-      //to add articleid here from query parameters
-      articleid: this.$route.query.aid,
       article_html:'xxx', 
       description:'',
+      articleid: null,
     }
   },
   created() {
     //no call here
-    //this.getArticleDetail()
   },
   mounted() {
     this.getArticleDetail()
@@ -76,10 +74,9 @@ export default {
         this.title = articles[0].title
         this.description = articles[0].description
         this.article_html = marked(articles[0].content) 
-        //this.articleid = articles[0].id
+        this.articleid = articles[0].id
       })
     },
-
 
   }
 }

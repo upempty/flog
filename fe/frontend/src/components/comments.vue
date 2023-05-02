@@ -36,10 +36,11 @@
 <script>
 export default {
   name: "Comments",
-  props: ['articleId',], 
+  props: ['articleId'], 
   watch: {
-    articleIdUpdate() {
-      this.articleId2 = articleId
+    articleId(newvalue, oldvalue) {
+      console.log('show comments once article id changed')
+      this.getArticleComments(newvalue)
     }
   },
   data(){
@@ -47,26 +48,30 @@ export default {
       comments: [],
       message: 'msg',
       comment: {},
-      articleId: this.articleId, 
+      articleId: null,
     }
   },
 
   create() {
-    //no here this.getArticleComments()
-    //this.getArticleComments()
   },
 
   mounted() {
     //'this prefix is must'
-    this.getArticleComments()
   },
 
   methods:{
     submitComment() {
+      if (this.articleId == null) {
+        this.$message({
+            type: 'error',
+            message: 'articleId is empty!'
+          })
+        return
+      }
+
       this.comment.article_id = this.articleId
       let comm = {article_id: this.articleId, message:this.comment.message}
       this.comments.unshift(comm)
-      alert(this.comment.message)
       this.$axios({
         url: 'rest/comment/',
         method: 'post',
@@ -78,29 +83,20 @@ export default {
         let article_comments = res.data.data
         let mss = article_comments[0].message
         let idd = article_comments[0].article_id
-        //this.comments = article_comments;
-        alert('responsed')
-
       })
 
 
     },
 
-    getArticleComments() {
-      let a = this.articleId
-      alert(a)
+    getArticleComments(aid) {
       this.$axios({
         url: 'rest/comment/',
         method: 'get',
         params: {
-          article_id: a,
+          article_id: aid,
         }
       }).then(res => {
-        alert('get responsed comments')
         this.comments = res.data.data
-        //let article_comments = res.data.data
-        alert('get responsed comments')
-        //this.comments = article_comments
       })
     },
 
