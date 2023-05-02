@@ -3,7 +3,7 @@
 
   <br /><br />
   <hr />
-  <h3>Provide comments</h3>
+  <h3>Your comments is welcome!</h3>
   <textarea
     v-model="comment.message"
     :placeholder="placeholder"
@@ -15,17 +15,16 @@
     <el-button @click="submitComment" class="submitBtn">Submit</el-button>
   </div>
 
-
     <hr>
     <div v-for="commentt in comments" :key="commentt.id">
-        <div class="comments">
-            <div>
+            <span>
                comment: 
-            </div>
-            <div class="content">
+            </span>
+            <ul>
+             <li>
                 {{ commentt.message }}
-            </div>
-        </div>
+             </li>
+            </ul>
      </div>
      <hr>
 
@@ -57,6 +56,7 @@ export default {
 
   mounted() {
     //'this prefix is must'
+    this.getArticleComments(this.articleId)
   },
 
   methods:{
@@ -85,10 +85,13 @@ export default {
         let idd = article_comments[0].article_id
       })
 
-
     },
 
     getArticleComments(aid) {
+      if (this.articleId == null) {
+        return
+      }
+      alert(aid)
       this.$axios({
         url: 'rest/comment/',
         method: 'get',
