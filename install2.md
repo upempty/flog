@@ -26,6 +26,7 @@ pip install Django
 pip3 install django-cors-headers
 pip3 install djangorestframework
 
+cd /myhome/programming/git/flog/blog
 python manage.py migrate
 python manage.py runserver 0.0.0.0:9000
 
